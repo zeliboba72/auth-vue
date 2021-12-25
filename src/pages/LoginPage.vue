@@ -38,6 +38,7 @@ import AppForm from "../components/AppForm";
 import AppLink from "../components/AppLink";
 import AppInput from "../components/AppInput";
 import AppCheckbox from "../components/AppCheckbox";
+import axios from "axios";
 export default {
   name: "LoginPage",
   components: {
@@ -77,7 +78,7 @@ export default {
         return;
       }
       this.v$.$reset();
-      this.axios({
+      axios({
         method: "post",
         url: "https://backend-front-test.dev.echo-company.ru/api/auth/login",
         data: {
