@@ -35,7 +35,7 @@
           :validate="v$.password.confirm"
       />
       <template v-slot:footer>
-        <app-link text="Аутентификация" to="/login"/>
+        <app-link text="Уже зарегистрированы?" to="/login"/>
       </template>
     </app-form>
   </app-wrapper>
