@@ -4,7 +4,7 @@
         title="Регистрация"
         submit-text="Зарегистрироваться"
         @submit="submitForm"
-        :error-text="serverErrorMessage"
+        error-text="Вы ввели неккоректные данные"
         :has-error="isServerError"
     >
       <app-input
@@ -48,7 +48,8 @@ import AppWrapper from "../components/AppWrapper";
 import AppForm from "../components/AppForm";
 import AppInput from "../components/AppInput";
 import AppLink from "../components/AppLink";
-import axios from "axios";
+import { registration } from "../custom/methodsApi";
+
 export default {
   name: 'RegisterPage',
   components: {
@@ -67,7 +68,6 @@ export default {
         password: null,
         confirm: null,
       },
-      serverErrorMessage: null,
       isServerError: false,
     }
   },
@@ -104,30 +104,20 @@ export default {
   },
   methods: {
     submitForm() {
-      if (this.isServerError) {
-        this.isServerError = false;
-        this.serverErrorMessage = null;
-      }
+      this.isServerError = false;
       this.v$.$validate();
       if (this.v$.$error) {
         return;
       }
-      this.v$.$reset();
-      axios({
-        method: 'post',
-        url: 'https://backend-front-test.dev.echo-company.ru/api/user/registration',
-        data: {
-          phone: this.phone,
-          first_name: this.firstName,
-          last_name: this.lastName,
-          password: this.password.password,
-        }
-      }).then((response) => {
-        localStorage.setItem('token', response.data.token);
-        this.$router.push('/');
-      }).catch((error) => {
-        this.isServerError = true;
-        this.serverErrorMessage = error.response.data.message;
+
+      registration(this.firstName, this.lastName, this.phone, this.password)
+          .then((result) => {
+            if (result) {
+              this.$router.push('/');
+            } else {
+              this.v$.$reset();
+              this.isServerError = true;
+            }
       });
     }
   }

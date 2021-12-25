@@ -38,7 +38,7 @@ import AppForm from "../components/AppForm";
 import AppLink from "../components/AppLink";
 import AppInput from "../components/AppInput";
 import AppCheckbox from "../components/AppCheckbox";
-import axios from "axios";
+import { login } from "../custom/methodsApi";
 export default {
   name: "LoginPage",
   components: {
@@ -77,27 +77,16 @@ export default {
         this.serverError = false;
         return;
       }
-      this.v$.$reset();
-      axios({
-        method: "post",
-        url: "https://backend-front-test.dev.echo-company.ru/api/auth/login",
-        data: {
-          phone: this.phone,
-          password: this.password,
-        }
-      }).then((response) => {
-        localStorage.setItem('token', response.data.token);
 
-        if (!this.remember) {
-          window.addEventListener('unload', () => {
-            localStorage.removeItem('token');
-          })
-        }
-
-        this.$router.push('/');
-      }).catch(() => {
-        this.serverError = true;
-        this.password = "";
+      login(this.phone, this.password, this.remember)
+          .then((result) => {
+            if (result) {
+              this.$router.push('/');
+            } else {
+              this.v$.$reset();
+              this.serverError = true;
+              this.password = "";
+            }
       });
     }
   }

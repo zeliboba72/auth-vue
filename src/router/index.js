@@ -3,7 +3,8 @@ import UserPage from "../pages/UserPage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
-import isAuthorized from "../custom/auth";
+import {isAuthorized} from "../custom/methodsApi";
+
 const routes = [
   {
     path: '/',
