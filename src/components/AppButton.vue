@@ -1,5 +1,13 @@
 <template>
-  <button class="button" :type="type" @click="$emit('click')">{{ text }}</button>
+  <button
+      class="button"
+      :class="{disabled:disabled}"
+      :type="type"
+      :disabled="disabled"
+      @click="$emit('click')"
+  >
+    {{ text }}
+  </button>
 </template>
 
 <script>
@@ -13,6 +21,10 @@ export default {
     type: {
       type: String,
       default: "button",
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     }
   },
   emits: ['click'],
@@ -32,6 +44,13 @@ export default {
   &:hover {
     background-color: $main-color;
     color: $light-color;
+  }
+
+  &.disabled {
+    pointer-events: none;
+    background-color: $main-color;
+    color: $light-color;
+    opacity: 0.7;
   }
 }
 </style>
