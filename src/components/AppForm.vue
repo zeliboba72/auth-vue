@@ -3,7 +3,9 @@
     <h1 class="title">{{ title }}</h1>
     <p class="error" v-if="hasError">{{ errorText }}</p>
     <slot/>
-    <app-button :text="submitText" type="submit"/>
+    <div>
+      <app-button :text="submitText" type="submit"/>
+    </div>
     <div class="footer">
       <slot name="footer"/>
     </div>
