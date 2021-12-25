@@ -2,7 +2,7 @@
   <app-wrapper>
     <div class="profile">
       <h1 v-if="username" class="title">Здравствуйте, {{ this.username }} !</h1>
-      <app-button text="Выйти" @click="logout"/>
+      <app-button text="Выйти" @click="onLogout"/>
     </div>
   </app-wrapper>
 </template>
@@ -10,7 +10,8 @@
 <script>
 import AppWrapper from "../components/AppWrapper";
 import AppButton from "../components/AppButton";
-import axios from "axios";
+import { getUser, logout } from "../custom/methodsApi";
+
 export default {
   name: 'UserPage',
   components: {
@@ -23,21 +24,13 @@ export default {
     }
   },
   created() {
-    const token = localStorage.getItem('token');
-
-    axios({
-      method: 'get',
-      url: 'https://backend-front-test.dev.echo-company.ru/api/user',
-      headers: {
-        'Authorization': token,
-      },
-    }).then((response) => {
-      this.username = response.data.first_name;
+    getUser().then((result) => {
+      this.username = result.first_name;
     });
   },
   methods: {
-    logout() {
-      localStorage.removeItem('token');
+    onLogout() {
+      logout();
       this.$router.push('/login');
     }
   }

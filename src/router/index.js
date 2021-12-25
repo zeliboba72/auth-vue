@@ -3,7 +3,7 @@ import UserPage from "../pages/UserPage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
-import {isAuthorized} from "../custom/methodsApi";
+import { getUser } from "../custom/methodsApi";
 
 const routes = [
   {
@@ -11,11 +11,13 @@ const routes = [
     name: 'UserPage',
     component: UserPage,
     beforeEnter: (to, from, next) => {
-      if (!isAuthorized()) {
-        next('/login');
-      } else {
-        next();
-      }
+      getUser(true).then((result) => {
+        if (!result) {
+          next('/login');
+        } else {
+          next();
+        }
+      })
     }
   },
   {
@@ -23,11 +25,13 @@ const routes = [
     name: 'LoginPage',
     component: LoginPage,
     beforeEnter: (to, from, next) => {
-      if (isAuthorized()) {
-        next('/');
-      } else {
-        next();
-      }
+      getUser(true).then((result) => {
+        if (result) {
+          next('/');
+        } else {
+          next();
+        }
+      });
     }
   },
   {
@@ -35,11 +39,13 @@ const routes = [
     name: 'RegisterPage',
     component: RegisterPage,
     beforeEnter: (to, from, next) => {
-      if (isAuthorized()) {
-        next('/');
-      } else {
-        next();
-      }
+      getUser(true).then((result) => {
+        if (result) {
+          next('/');
+        } else {
+          next();
+        }
+      });
     }
   },
   {
@@ -47,11 +53,13 @@ const routes = [
     name: 'ForgotPasswordPage',
     component: ForgotPasswordPage,
     beforeEnter: (to, from, next) => {
-      if (isAuthorized()) {
-        next('/');
-      } else {
-        next();
-      }
+      getUser(true).then((result) => {
+        if (result) {
+          next('/');
+        } else {
+          next();
+        }
+      });
     }
   },
 ]

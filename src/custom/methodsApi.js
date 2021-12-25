@@ -1,9 +1,11 @@
 import axios from "axios";
 
-export function isAuthorized() {
+export function getUser(justCheck) {
     const token = localStorage.getItem('token');
     if (!token) {
-        return false;
+        return new Promise((resolve) => {
+            return resolve(false);
+        });
     }
 
     return axios({
@@ -12,8 +14,12 @@ export function isAuthorized() {
         headers: {
             'Authorization': token,
         },
-    }).then(() => {
-        return true;
+    }).then((response) => {
+        if (justCheck) {
+            return true;
+        } else {
+            return response.data;
+        }
     }).catch(() => {
         return false;
     });
@@ -56,4 +62,8 @@ export function registration (firstName, lastName, phone, password) {
     }).catch(() => {
         return false;
     });
+}
+
+export function logout () {
+    localStorage.removeItem('token');
 }
