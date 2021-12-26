@@ -1,14 +1,15 @@
 <template>
-  <div class="wrapper" :class="{empty:hasError}">
-    <label class="input-label">
-      <span class="label-text">{{ label }}:</span>
-      <input class="input"
+  <div class="app-input" :class="{error:hasError}">
+    <label class="app-input__label">
+      <span class="app-input__label-text"><slot/>:</span>
+      <input class="app-input__control"
              :type="type"
              :value="modelValue"
              @input="$emit('update:modelValue', $event.target.value)"
+             @blur="$emit('blur')"
       />
     </label>
-    <small v-if="hasError" class="error-text">{{ firstErrorMessage }}</small>
+    <small v-if="hasError" class="app-input__error-text">{{ firstErrorMessage }}</small>
   </div>
 </template>
 
@@ -16,18 +17,18 @@
 export default {
   name: "AppInput",
   props: {
-    label: {
-      type: String,
-      required: true,
-    },
     type: {
       type: String,
       default: "text",
     },
-    modelValue: String,
-    validate: Object,
+    modelValue: {
+      type: String,
+    },
+    validate: {
+      type: Object,
+    },
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'blur'],
   computed: {
     firstErrorMessage() {
       if (!this.validate.$error) {
@@ -50,37 +51,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
+.app-input {
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
-}
-.wrapper.empty {
-  & .input {
+  &.error &__control {
     border: 2px solid $danger-color;
   }
-}
-.input-label {
-  display: flex;
-  flex-direction: column;
-}
-.label-text {
-  color: $main-color;
-  font-weight: 700;
-  font-size: 18px;
-  margin-bottom: 5px;
-}
-.input {
-  font-size: 16px;
-  padding: 10px;
-  border: 2px solid $main-color;
-  &:focus {
-    outline-color: $secondary-color;
-    outline-style: solid;
-    border: 2px solid $secondary-color;
+  &__label {
+    display: flex;
+    flex-direction: column;
   }
-}
-.error-text {
-  color: $danger-color;
+  &__label-text {
+    color: $main-color;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+  &__control {
+    font-size: 16px;
+    padding: 10px;
+    border: 2px solid $main-color;
+    &:focus {
+      outline-color: $secondary-color;
+      outline-style: solid;
+      border: 2px solid $secondary-color;
+    }
+  }
+  &__error-text {
+    color: $danger-color;
+  }
 }
 </style>

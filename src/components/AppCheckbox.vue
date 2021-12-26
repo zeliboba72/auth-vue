@@ -1,8 +1,12 @@
 <template>
-  <div class="wrapper">
-    <label class="checkbox-label">
-      <input class="checkbox" type="checkbox" :checked="modelValue" @change="$emit('update:modelValue', $event.target.checked)">
-      <span class="label-text">{{ label }}</span>
+  <div class="app-checkbox">
+    <label class="app-checkbox__label">
+      <input
+          class="app-checkbox__control"
+          type="checkbox" :checked="modelValue"
+          @change="$emit('update:modelValue', $event.target.checked)"
+      >
+      <span class="app-checkbox__label-text"><slot/></span>
     </label>
   </div>
 </template>
@@ -11,10 +15,6 @@
 export default {
   name: "AppCheckbox",
   props: {
-    label: {
-      type: String,
-      required: true,
-    },
     modelValue: {
       type: Boolean,
       default: false,
@@ -25,11 +25,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.label-text {
-  font-weight: 700;
-  color: $main-color;
-}
-.checkbox {
-  margin-right: 5px;
+.app-checkbox {
+  &__label-text {
+    font-weight: 700;
+    color: $main-color;
+  }
+  &__control {
+    margin-right: 5px;
+  }
 }
 </style>

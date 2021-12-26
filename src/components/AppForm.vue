@@ -1,12 +1,17 @@
 <template>
-  <form class="form" @submit.prevent="$emit('submit')">
-    <h1 class="title">{{ title }}</h1>
-    <p class="error" v-if="hasError">{{ errorText }}</p>
+  <form class="app-form" @submit.prevent="$emit('submit')">
+    <h2 class="app-form__title">{{ title }}</h2>
+    <p v-if="hasError" class="app-form__error">{{ errorText }}</p>
     <slot/>
-    <div>
-      <app-button :text="submitText" type="submit"/>
+    <div class="app-form__button-wrapper">
+      <app-button
+          class="app-form__button"
+          type="submit"
+      >
+        {{ submitText }}
+      </app-button>
     </div>
-    <div class="footer">
+    <div class="app-form__footer">
       <slot name="footer"/>
     </div>
   </form>
@@ -40,24 +45,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.form {
+.app-form {
   width: 100%;
   max-width: 500px;
   padding: 30px;
   border: 4px solid $secondary-color;
   background-color: $light-color;
-}
-
-.title {
-  margin-bottom: 20px;
-}
-
-.error {
-  color: $danger-color;
-  margin-bottom: 20px;
-}
-
-.footer {
-  margin-top: 20px;
+  &__title {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  &__error {
+    color: $danger-color;
+    margin-bottom: 20px;
+  }
+  &__footer {
+    margin-top: 20px;
+  }
 }
 </style>

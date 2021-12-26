@@ -1,12 +1,12 @@
 <template>
   <button
-      class="button"
+      class="app-button"
       :class="{disabled:disabled}"
       :type="type"
       :disabled="disabled"
       @click="$emit('click')"
   >
-    {{ text }}
+    <slot/>
   </button>
 </template>
 
@@ -14,10 +14,6 @@
 export default {
   name: "AppButton",
   props: {
-    text: {
-      type: String,
-      required: true,
-    },
     type: {
       type: String,
       default: "button",
@@ -32,7 +28,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.button {
+.app-button {
   background-color: $secondary-color;
   color: $main-color;
   border: none;

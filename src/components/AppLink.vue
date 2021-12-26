@@ -1,5 +1,5 @@
 <template>
-  <router-link class="link" :to="to">{{ text }}</router-link>
+  <router-link class="app-link" :to="to"><slot/></router-link>
 </template>
 
 <script>
@@ -10,16 +10,12 @@ export default {
       type: String,
       required: true,
     },
-    text: {
-      type: String,
-      required: true,
-    }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.link {
+.app-link {
   text-decoration: none;
   color: $secondary-color;
   transition: color 0.2s linear;
