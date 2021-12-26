@@ -40,12 +40,10 @@ export default {
 <style lang="scss" scoped>
 .app-form {
   width: 100%;
-  max-width: 500px;
   padding: 30px;
   border: 4px solid $secondary-color;
   background-color: $light-color;
   &__title {
-    font-size: 28px;
     margin-bottom: 20px;
   }
   &__error {

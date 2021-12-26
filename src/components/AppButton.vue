@@ -48,5 +48,10 @@ export default {
     color: $light-color;
     opacity: 0.7;
   }
+
+  @media screen and (max-width: $mobile) {
+    width: 100%;
+    font-size: 16px;
+  }
 }
 </style>

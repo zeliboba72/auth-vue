@@ -1,53 +1,57 @@
 <template>
-  <app-form
-      title="Восстановление пароля"
-      submit-text="Восстановить пароль"
-      @submit="onSubmit"
-  >
-    <div class="phone-wrapper">
+  <div class="forgot-password-page">
+    <app-form
+        title="Восстановление пароля"
+        submit-text="Восстановить пароль"
+        @submit="onSubmit"
+    >
+      <div class="forgot-password-page__sms-wrapper">
+        <app-input
+            v-model="phone"
+            :error-message="errorMessagePhone"
+            @blur="v$.phone.$touch"
+        >
+          Телефон
+        </app-input>
+        <p class="forgot-password-page__resend-text" v-if="timer">Отправить повторно через {{ timer }} секунд</p>
+        <app-button
+            :disabled="disabledSendButton"
+            @click="sendSms"
+        >
+          Отправить код
+        </app-button>
+      </div>
       <app-input
-          v-model="phone"
-          :error-message="errorMessagePhone"
-          @blur="v$.phone.$touch"
+          v-model="code"
+          :error-message="errorMessageCode"
+          @blur="v$.code.$touch"
       >
-        Телефон
+        Код из СМС
       </app-input>
-      <p class="resend-text" v-if="timer">Отправить повторно через {{ timer }} секунд</p>
-      <app-button
-          :disabled="disabledSendButton"
-          @click="sendSms"
+      <app-input
+          type="password"
+          v-model="password"
+          :error-message="errorMessagePassword"
+          @blur="v$.password.$touch"
       >
-        Отправить код
-      </app-button>
-    </div>
-    <app-input
-        v-model="code"
-        :error-message="errorMessageCode"
-        @blur="v$.code.$touch"
-    >
-      Код из СМС
-    </app-input>
-    <app-input
-        type="password"
-        v-model="password"
-        :error-message="errorMessagePassword"
-        @blur="v$.password.$touch"
-    >
-      Новый пароль
-    </app-input>
-    <app-input
-        type="password"
-        v-model="confirmPassword"
-        :error-message="errorMessageConfirmPassword"
-        @blur="v$.confirmPassword.$touch"
-    >
-      Новый пароль еще раз
-    </app-input>
-    <template v-slot:footer>
-      <app-link class="first-link" :to="{ name: 'login-page' }">Вспомнил пароль!</app-link>
-      <app-link :to="{ name: 'register-page' }">Регистрация</app-link>
-    </template>
-  </app-form>
+        Новый пароль
+      </app-input>
+      <app-input
+          type="password"
+          v-model="confirmPassword"
+          :error-message="errorMessageConfirmPassword"
+          @blur="v$.confirmPassword.$touch"
+      >
+        Новый пароль еще раз
+      </app-input>
+      <template v-slot:footer>
+        <div class="forgot-password-page__footer-links-wrapper">
+          <app-link class="forgot-password-page__footer-link" :to="{ name: 'login-page' }">Вспомнил пароль!</app-link>
+          <app-link class="forgot-password-page__footer-link" :to="{ name: 'register-page' }">Еще не имеете аккаунта?</app-link>
+        </div>
+      </template>
+    </app-form>
+  </div>
 </template>
 <script>
 import AppForm from "../components/AppForm";
@@ -209,15 +213,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.phone-wrapper {
-  margin-bottom: 30px;
-}
-.resend-text {
-  color: $main-color;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-.first-link {
-  margin-right: 10px;
+.forgot-password-page {
+  flex-grow: 1;
+  max-width: 500px;
+  margin: 0 auto;
+  &__sms-wrapper {
+    margin-bottom: 30px;
+  }
+  &__resend-text {
+    color: $main-color;
+    font-weight: 700;
+    margin-bottom: 10px;
+    @media screen and (max-width: $mobile) {
+      font-size: 13px;
+    }
+  }
+  &__footer-links-wrapper {
+    display: flex;
+    justify-content: space-between;
+    @media screen and (max-width: $mobile) {
+      flex-direction: column;
+    }
+  }
+  &__footer-link {
+    @media screen and (max-width: $mobile) {
+      margin: 5px 0;
+    }
+  }
 }
 </style>

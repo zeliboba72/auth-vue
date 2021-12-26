@@ -16,16 +16,16 @@ export default {
 </script>
 
 <style lang="scss">
-h1,h2,h3,h4,h5 {
-  color: $main-color;
-}
-
 body {
-  height: 100vh;
   background-color: $main-color;
 }
-
-#app {
-  height: 100%;
+h1,h2 {
+  color: $main-color;
+  font-size: 30px;
+  text-align: center;
+  @media screen and (max-width: $mobile) {
+    font-size: 24px;
+  }
 }
+
 </style>

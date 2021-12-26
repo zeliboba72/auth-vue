@@ -1,7 +1,7 @@
 <template>
   <div class="app-input" :class="{error:errorMessage}">
     <label class="app-input__label">
-      <span class="app-input__label-text"><slot/>:</span>
+      <span class="app-input__label-text"><slot/></span>
       <input class="app-input__control"
              :type="type"
              :value="modelValue"
@@ -37,6 +37,9 @@ export default {
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+  @media screen and (max-width: $mobile) {
+    margin-bottom: 10px;
+  }
   &.error &__control {
     border: 2px solid $danger-color;
   }
@@ -49,6 +52,10 @@ export default {
     font-weight: 700;
     font-size: 18px;
     margin-bottom: 5px;
+    @media screen and (max-width: $mobile) {
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
   }
   &__control {
     font-size: 16px;

@@ -1,50 +1,52 @@
 <template>
-  <app-form
-      title="Регистрация"
-      submit-text="Зарегистрироваться"
-      @submit="submitForm"
-  >
-    <app-input
-        v-model="firstName"
-        :error-message="errorMessageFirstName"
-        @blur="v$.firstName.$touch"
+  <div class="register-page">
+    <app-form
+        title="Регистрация"
+        submit-text="Зарегистрироваться"
+        @submit="submitForm"
     >
-      Имя
-    </app-input>
-    <app-input
-        v-model="lastName"
-        :error-message="errorMessageLastName"
-        @blur="v$.lastName.$touch"
-    >
-      Фамилия
-    </app-input>
-    <app-input
-        v-model="phone"
-        :error-message="errorMessagePhone"
-        @blur="v$.phone.$touch"
-    >
-      Телефон
-    </app-input>
-    <app-input
-        type="password"
-        v-model="password"
-        :error-message="errorMessagePassword"
-        @blur="v$.password.$touch"
-    >
-      Пароль
-    </app-input>
-    <app-input
-        type="password"
-        v-model="confirmPassword"
-        :error-message="errorMessageConfirmPassword"
-        @blur="v$.confirmPassword.$touch"
-    >
-      Пароль еще раз
-    </app-input>
-    <template v-slot:footer>
-      <app-link :to="{ name: 'login-page' }">Уже зарегистрированы?</app-link>
-    </template>
-  </app-form>
+      <app-input
+          v-model="firstName"
+          :error-message="errorMessageFirstName"
+          @blur="v$.firstName.$touch"
+      >
+        Имя
+      </app-input>
+      <app-input
+          v-model="lastName"
+          :error-message="errorMessageLastName"
+          @blur="v$.lastName.$touch"
+      >
+        Фамилия
+      </app-input>
+      <app-input
+          v-model="phone"
+          :error-message="errorMessagePhone"
+          @blur="v$.phone.$touch"
+      >
+        Телефон
+      </app-input>
+      <app-input
+          type="password"
+          v-model="password"
+          :error-message="errorMessagePassword"
+          @blur="v$.password.$touch"
+      >
+        Пароль
+      </app-input>
+      <app-input
+          type="password"
+          v-model="confirmPassword"
+          :error-message="errorMessageConfirmPassword"
+          @blur="v$.confirmPassword.$touch"
+      >
+        Пароль еще раз
+      </app-input>
+      <template v-slot:footer>
+        <app-link :to="{ name: 'login-page' }">Уже зарегистрированы?</app-link>
+      </template>
+    </app-form>
+  </div>
 </template>
 
 <script>
@@ -173,3 +175,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.register-page {
+  flex-grow: 1;
+  margin: 0 auto;
+  max-width: 500px;
+}
+</style>

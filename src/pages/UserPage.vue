@@ -36,8 +36,10 @@ export default {
 <style lang="scss" scoped>
 
 .user-page {
+  flex-grow: 1;
   width: 100%;
   max-width: 500px;
+  margin: 0 auto;
   border: 4px solid $secondary-color;
   background-color: $light-color;
   padding: 30px;

@@ -1,33 +1,34 @@
 <template>
-  <app-form
-      title="Аутентификация"
-      submit-text="Войти"
-      @submit="formSubmit"
-  >
-    <app-input
-        v-model="phone"
-        :error-message="errorMessagePhone"
-        @blur="v$.phone.$touch"
+  <div class="login-page">
+    <app-form
+        title="Аутентификация"
+        submit-text="Войти"
+        @submit="formSubmit"
     >
-      Номер телефона
-    </app-input>
-    <app-input
-        type="password"
-        v-model="password"
-        :error-message="errorMessagePassword"
-        @blur="v$.password.$touch"
-    >
-      Пароль
-    </app-input>
-    <div class="checkbox-wrapper">
-      <app-checkbox v-model="remember">Запомнить меня</app-checkbox>
-      <app-link :to="{ name: 'forgot-password-page' }">Забыли пароль?</app-link>
-    </div>
-    <template v-slot:footer>
-      <span class="text">Еще не имеете аккаунта? </span>
-      <app-link :to="{ name: 'register-page' }">Зарегистрироваться</app-link>
-    </template>
-  </app-form>
+      <app-input
+          v-model="phone"
+          :error-message="errorMessagePhone"
+          @blur="v$.phone.$touch"
+      >
+        Номер телефона
+      </app-input>
+      <app-input
+          type="password"
+          v-model="password"
+          :error-message="errorMessagePassword"
+          @blur="v$.password.$touch"
+      >
+        Пароль
+      </app-input>
+      <app-checkbox class="login-page__checkbox" v-model="remember">Запомнить меня</app-checkbox>
+      <template v-slot:footer>
+        <div class="login-page__footer-links-wrapper">
+          <app-link class="login-page__footer-link" :to="{ name: 'forgot-password-page' }">Забыли пароль?</app-link>
+          <app-link class="login-page__footer-link" :to="{ name: 'register-page' }">Еще не имеете аккаунта?</app-link>
+        </div>
+      </template>
+    </app-form>
+  </div>
 </template>
 
 <script>
@@ -123,10 +124,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.checkbox-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
+.login-page {
+  flex-grow: 1;
+  max-width: 500px;
+  margin: 0 auto;
+  &__checkbox {
+    margin: 20px 0;
+
+  }
+  &__footer-links-wrapper {
+    display: flex;
+    justify-content: space-between;
+    @media screen and (max-width: $mobile) {
+      flex-direction: column;
+    }
+  }
+  &__footer-link {
+    @media screen and (max-width: $mobile) {
+      margin: 5px 0;
+    }
+  }
 }
 </style>
