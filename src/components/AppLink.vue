@@ -7,7 +7,7 @@ export default {
   name: 'AppLink',
   props: {
     to: {
-      type: String,
+      type: Object,
       required: true,
     },
   },

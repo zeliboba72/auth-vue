@@ -39,7 +39,7 @@
       Пароль еще раз
     </app-input>
     <template v-slot:footer>
-      <app-link to="/login">Уже зарегистрированы?</app-link>
+      <app-link :to="{ name: 'login-page' }">Уже зарегистрированы?</app-link>
     </template>
   </app-form>
 </template>
@@ -114,7 +114,7 @@ export default {
       registration(this.firstName, this.lastName, this.phone, this.password)
           .then((result) => {
             if (result) {
-              this.$router.push('/');
+              this.$router.push({ name: 'user-page' });
             } else {
               this.v$.$reset();
               this.isServerError = true;

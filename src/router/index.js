@@ -8,65 +8,53 @@ import { getUser } from "../custom/methodsApi";
 const routes = [
   {
     path: '/',
-    name: 'UserPage',
+    name: 'user-page',
     component: UserPage,
-    beforeEnter: (to, from, next) => {
-      getUser(true).then((result) => {
-        if (!result) {
-          next('/login');
-        } else {
-          next();
-        }
-      })
-    }
+    meta: {
+      needAuth: true,
+    },
   },
   {
     path: '/login',
-    name: 'LoginPage',
+    name: 'login-page',
     component: LoginPage,
-    beforeEnter: (to, from, next) => {
-      getUser(true).then((result) => {
-        if (result) {
-          next('/');
-        } else {
-          next();
-        }
-      });
-    }
+    meta: {
+      notForAuth: true,
+    },
   },
   {
     path: '/register',
-    name: 'RegisterPage',
+    name: 'register-page',
     component: RegisterPage,
-    beforeEnter: (to, from, next) => {
-      getUser(true).then((result) => {
-        if (result) {
-          next('/');
-        } else {
-          next();
-        }
-      });
-    }
+    meta: {
+      notForAuth: true,
+    },
   },
   {
     path: '/forgot-password',
-    name: 'ForgotPasswordPage',
+    name: 'forgot-password-page',
     component: ForgotPasswordPage,
-    beforeEnter: (to, from, next) => {
-      getUser(true).then((result) => {
-        if (result) {
-          next('/');
-        } else {
-          next();
-        }
-      });
-    }
+    meta: {
+      notForAuth: true,
+    },
   },
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  getUser(true).then((result) => {
+    if (to.meta.needAuth && !result) {
+      return next({ name: 'login-page' });
+    } else if (to.meta.notForAuth && result) {
+      return next({ name: 'user-page' });
+    } else {
+      return next();
+    }
+  });
 })
 
 export default router

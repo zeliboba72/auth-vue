@@ -27,7 +27,7 @@ export default {
   methods: {
     onLogout() {
       logout();
-      this.$router.push('/login');
+      this.$router.push({ name: 'login-page' });
     }
   }
 }

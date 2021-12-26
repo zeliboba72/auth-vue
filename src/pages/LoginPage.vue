@@ -21,11 +21,11 @@
     </app-input>
     <div class="checkbox-wrapper">
       <app-checkbox v-model="remember">Запомнить меня</app-checkbox>
-      <app-link to="/forgot-password">Забыли пароль?</app-link>
+      <app-link :to="{ name: 'forgot-password-page' }">Забыли пароль?</app-link>
     </div>
     <template v-slot:footer>
       <span class="text">Еще не имеете аккаунта? </span>
-      <app-link to="/register">Зарегистрироваться</app-link>
+      <app-link :to="{ name: 'register-page' }">Зарегистрироваться</app-link>
     </template>
   </app-form>
 </template>
@@ -79,7 +79,7 @@ export default {
       login(this.phone, this.password, this.remember)
           .then((result) => {
             if (result) {
-              this.$router.push('/');
+              this.$router.push({ name: 'user-page' });
             } else {
               this.v$.$reset();
               this.serverError = true;
