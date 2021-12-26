@@ -2,20 +2,20 @@
   <app-form
       title="Аутентификация"
       submit-text="Войти"
-      error-text="Неверные данные для входа"
-      :has-error="serverError"
       @submit="formSubmit"
   >
     <app-input
         v-model="phone"
-        :validate="v$.phone"
+        :error-message="errorMessagePhone"
+        @blur="v$.phone.$touch"
     >
       Номер телефона
     </app-input>
     <app-input
         type="password"
         v-model="password"
-        :validate="v$.password"
+        :error-message="errorMessagePassword"
+        @blur="v$.password.$touch"
     >
       Пароль
     </app-input>
@@ -32,7 +32,7 @@
 
 <script>
 import useVuelidate from '@vuelidate/core';
-import { required, maxLength, numeric, helpers } from '@vuelidate/validators';
+import {required, maxLength, minLength, numeric, helpers} from '@vuelidate/validators';
 import AppForm from "../components/AppForm";
 import AppLink from "../components/AppLink";
 import AppInput from "../components/AppInput";
@@ -52,14 +52,15 @@ export default {
       phone: null,
       password: null,
       remember: false,
-      serverError: false,
+      serverErrorMessage: null,
     }
   },
   validations () {
     return {
       phone: {
         required: helpers.withMessage('Поле обязательно для заполнения', required),
-        maxLength: helpers.withMessage('Поле не должно превышать 255 символов', maxLength(255)),
+        maxLength: helpers.withMessage('Поле обязательно для заполнения', maxLength(11)),
+        minLength: helpers.withMessage('Поле обязательно для заполнения', minLength(11)),
         numeric: helpers.withMessage('Поле должно содержать только цифры', numeric),
       },
       password: {
@@ -68,22 +69,52 @@ export default {
       },
     }
   },
+  computed: {
+    errorMessagePhone() {
+      if (this.v$.phone.$error) {
+        return this.v$.phone.$errors[0].$message;
+      } else if (this.serverErrorMessage) {
+        return this.serverErrorMessage;
+      } else {
+        return null;
+      }
+    },
+    errorMessagePassword() {
+      if (this.v$.password.$error) {
+        return this.v$.password.$errors[0].$message;
+      } else if (this.serverErrorMessage) {
+        return this.serverErrorMessage;
+      } else {
+        return null;
+      }
+    }
+  },
+  watch: {
+    password(newValue) {
+      if (newValue) {
+        this.serverErrorMessage = null;
+      }
+    }
+  },
   methods: {
     formSubmit() {
+      if (this.serverErrorMessage) {
+        return;
+      }
+
       this.v$.$validate();
       if (this.v$.$error) {
-        this.serverError = false;
         return;
       }
 
       login(this.phone, this.password, this.remember)
           .then((result) => {
-            if (result) {
+            if (result.success) {
               this.$router.push({ name: 'user-page' });
             } else {
               this.v$.$reset();
-              this.serverError = true;
-              this.password = "";
+              this.password = null;
+              this.serverErrorMessage = result.message;
             }
       });
     }

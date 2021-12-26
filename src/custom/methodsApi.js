@@ -37,9 +37,14 @@ export function login (phone, password, remember) {
                 localStorage.removeItem('token');
             })
         }
-        return true;
+        return {
+            success: true,
+        };
     }).catch(() => {
-        return false;
+        return {
+            success: false,
+            message: "Неверные данные для входа",
+        };
     });
 }
 
