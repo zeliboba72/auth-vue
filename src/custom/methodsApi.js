@@ -56,9 +56,14 @@ export function registration (firstName, lastName, phone, password) {
         password: password,
     }).then((response) => {
         localStorage.setItem('token', response.data.token);
-        return true;
+        return {
+            success: true,
+        };
     }).catch(() => {
-        return false;
+        return {
+            success: false,
+            message: "Пользователь с таким телефоном уже зарегистрирован",
+        };
     });
 }
 

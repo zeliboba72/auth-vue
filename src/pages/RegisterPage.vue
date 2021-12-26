@@ -2,39 +2,42 @@
   <app-form
       title="Регистрация"
       submit-text="Зарегистрироваться"
-      error-text="Вы ввели неккоректные данные"
-      :has-error="isServerError"
       @submit="submitForm"
   >
     <app-input
         v-model="firstName"
-        :validate="v$.firstName"
+        :error-message="errorMessageFirstName"
+        @blur="v$.firstName.$touch"
     >
       Имя
     </app-input>
     <app-input
         v-model="lastName"
-        :validate="v$.lastName"
+        :error-message="errorMessageLastName"
+        @blur="v$.lastName.$touch"
     >
       Фамилия
     </app-input>
     <app-input
         v-model="phone"
-        :validate="v$.phone"
+        :error-message="errorMessagePhone"
+        @blur="v$.phone.$touch"
     >
       Телефон
     </app-input>
     <app-input
         type="password"
-        v-model="password.password"
-        :validate="v$.password.password"
+        v-model="password"
+        :error-message="errorMessagePassword"
+        @blur="v$.password.$touch"
     >
       Пароль
     </app-input>
     <app-input
         type="password"
-        v-model="password.confirm"
-        :validate="v$.password.confirm"
+        v-model="confirmPassword"
+        :error-message="errorMessageConfirmPassword"
+        @blur="v$.confirmPassword.$touch"
     >
       Пароль еще раз
     </app-input>
@@ -65,11 +68,9 @@ export default {
       firstName: null,
       lastName: null,
       phone: null,
-      password: {
-        password: null,
-        confirm: null,
-      },
-      isServerError: false,
+      password: null,
+      confirmPassword: null,
+      serverErrorMessage: null,
     }
   },
   validations () {
@@ -86,26 +87,72 @@ export default {
       },
       phone: {
         required: helpers.withMessage('Поле обязательно для заполнения', required),
-        maxLength: helpers.withMessage('Поле не должно превышать 255 символов', maxLength(255)),
+        maxLength: helpers.withMessage('Поле обязательно для заполнения', maxLength(11)),
+        minLength: helpers.withMessage('Поле обязательно для заполнения', minLength(11)),
         numeric: helpers.withMessage('Поле должно содержать только цифры', numeric),
       },
       password: {
-        password: {
-          required: helpers.withMessage('Поле обязательно для заполнения', required),
-          maxLength: helpers.withMessage('Поле не должно превышать 255 символов', maxLength(255)),
-          minLength: helpers.withMessage('Пароль должен состоять не менее чем из 8 символов', minLength(8)),
-          sameAs: helpers.withMessage('Пароли не совпадают', sameAs(this.password.confirm)),
-        },
-        confirm: {
-          required: helpers.withMessage('Поле обязательно для заполнения', required),
-          sameAs: helpers.withMessage('Пароли не совпадают', sameAs(this.password.password)),
-        }
+        required: helpers.withMessage('Поле обязательно для заполнения', required),
+        maxLength: helpers.withMessage('Поле не должно превышать 255 символов', maxLength(255)),
+        minLength: helpers.withMessage('Пароль должен состоять не менее чем из 8 символов', minLength(8)),
+        sameAs: helpers.withMessage('Пароли не совпадают', sameAs(this.confirmPassword)),
       },
+      confirmPassword: {
+        required: helpers.withMessage('Поле обязательно для заполнения', required),
+        sameAs: helpers.withMessage('Пароли не совпадают', sameAs(this.password)),
+      },
+    }
+  },
+  computed: {
+    errorMessageFirstName() {
+      if (this.v$.firstName.$error) {
+        return this.v$.firstName.$errors[0].$message;
+      } else {
+        return null;
+      }
+    },
+    errorMessageLastName() {
+      if (this.v$.lastName.$error) {
+        return this.v$.lastName.$errors[0].$message;
+      } else {
+        return null;
+      }
+    },
+    errorMessagePhone() {
+      if (this.v$.phone.$error) {
+        return this.v$.phone.$errors[0].$message;
+      } else if (this.serverErrorMessage) {
+        return this.serverErrorMessage;
+      } else {
+        return null;
+      }
+    },
+    errorMessagePassword() {
+      if (this.v$.password.$error) {
+        return this.v$.password.$errors[0].$message;
+      } else {
+        return null;
+      }
+    },
+    errorMessageConfirmPassword() {
+      if (this.v$.confirmPassword.$error) {
+        return this.v$.confirmPassword.$errors[0].$message;
+      } else {
+        return null;
+      }
+    },
+  },
+  watch: {
+    phone() {
+      this.serverErrorMessage = null;
     }
   },
   methods: {
     submitForm() {
-      this.isServerError = false;
+      if (this.serverErrorMessage) {
+        return;
+      }
+
       this.v$.$validate();
       if (this.v$.$error) {
         return;
@@ -113,11 +160,13 @@ export default {
 
       registration(this.firstName, this.lastName, this.phone, this.password)
           .then((result) => {
-            if (result) {
+            if (result.success) {
               this.$router.push({ name: 'user-page' });
             } else {
+              this.serverErrorMessage = result.message;
+              this.password = null;
+              this.confirmPassword = null;
               this.v$.$reset();
-              this.isServerError = true;
             }
       });
     }
