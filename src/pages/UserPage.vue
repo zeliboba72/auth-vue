@@ -1,14 +1,11 @@
 <template>
-  <app-wrapper>
-    <div class="profile">
-      <h1 v-if="username" class="title">Здравствуйте, {{ this.username }} !</h1>
-      <app-button text="Выйти" @click="onLogout"/>
-    </div>
-  </app-wrapper>
+  <div class="user-page">
+    <h1 v-if="username" class="user-page__title">Здравствуйте, {{ this.username }} !</h1>
+    <app-button @click="onLogout">Выйти</app-button>
+  </div>
 </template>
 
 <script>
-import AppWrapper from "../components/AppWrapper";
 import AppButton from "../components/AppButton";
 import { getUser, logout } from "../custom/methodsApi";
 
@@ -16,7 +13,6 @@ export default {
   name: 'UserPage',
   components: {
     AppButton,
-    AppWrapper,
   },
   data() {
     return {
@@ -39,15 +35,14 @@ export default {
 
 <style lang="scss" scoped>
 
-.profile {
+.user-page {
   width: 100%;
   max-width: 500px;
   border: 4px solid $secondary-color;
   background-color: $light-color;
   padding: 30px;
-}
-
-.title {
-  margin-bottom: 20px;
+  &__title {
+    margin-bottom: 20px;
+  }
 }
 </style>

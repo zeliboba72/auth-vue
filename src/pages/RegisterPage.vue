@@ -1,50 +1,52 @@
 <template>
-  <app-wrapper>
-    <app-form
-        title="Регистрация"
-        submit-text="Зарегистрироваться"
-        @submit="submitForm"
-        error-text="Вы ввели неккоректные данные"
-        :has-error="isServerError"
+  <app-form
+      title="Регистрация"
+      submit-text="Зарегистрироваться"
+      error-text="Вы ввели неккоректные данные"
+      :has-error="isServerError"
+      @submit="submitForm"
+  >
+    <app-input
+        v-model="firstName"
+        :validate="v$.firstName"
     >
-      <app-input
-          label="Имя"
-          v-model="firstName"
-          :validate="v$.firstName"
-      />
-      <app-input
-          label="Фамилия"
-          v-model="lastName"
-          :validate="v$.lastName"
-      />
-      <app-input
-          label="Телефон"
-          v-model="phone"
-          :validate="v$.phone"
-      />
-      <app-input
-          label="Пароль"
-          type="password"
-          v-model="password.password"
-          :validate="v$.password.password"
-      />
-      <app-input
-          label="Пароль еще раз"
-          type="password"
-          v-model="password.confirm"
-          :validate="v$.password.confirm"
-      />
-      <template v-slot:footer>
-        <app-link text="Уже зарегистрированы?" to="/login"/>
-      </template>
-    </app-form>
-  </app-wrapper>
+      Имя
+    </app-input>
+    <app-input
+        v-model="lastName"
+        :validate="v$.lastName"
+    >
+      Фамилия
+    </app-input>
+    <app-input
+        v-model="phone"
+        :validate="v$.phone"
+    >
+      Телефон
+    </app-input>
+    <app-input
+        type="password"
+        v-model="password.password"
+        :validate="v$.password.password"
+    >
+      Пароль
+    </app-input>
+    <app-input
+        type="password"
+        v-model="password.confirm"
+        :validate="v$.password.confirm"
+    >
+      Пароль еще раз
+    </app-input>
+    <template v-slot:footer>
+      <app-link to="/login">Уже зарегистрированы?</app-link>
+    </template>
+  </app-form>
 </template>
 
 <script>
 import useVuelidate from '@vuelidate/core';
 import { required, maxLength, minLength, numeric, sameAs, helpers } from '@vuelidate/validators';
-import AppWrapper from "../components/AppWrapper";
 import AppForm from "../components/AppForm";
 import AppInput from "../components/AppInput";
 import AppLink from "../components/AppLink";
@@ -54,7 +56,6 @@ export default {
   name: 'RegisterPage',
   components: {
     AppForm,
-    AppWrapper,
     AppLink,
     AppInput,
   },

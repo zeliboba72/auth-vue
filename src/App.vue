@@ -1,9 +1,21 @@
 <template>
-  <router-view/>
+  <app-wrapper>
+    <router-view/>
+  </app-wrapper>
 </template>
 
-<style lang="scss">
+<script>
+import AppWrapper from "./components/AppWrapper";
 
+export default {
+  name: 'App',
+  components: {
+    AppWrapper,
+  },
+}
+</script>
+
+<style lang="scss">
 h1,h2,h3,h4,h5 {
   color: $main-color;
 }

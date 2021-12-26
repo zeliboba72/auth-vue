@@ -1,39 +1,38 @@
 <template>
-  <app-wrapper>
-    <app-form
-        title="Аутентификация"
-        submit-text="Войти"
-        @submit="formSubmit"
-        error-text="Неверные данные для входа"
-        :has-error="serverError"
+  <app-form
+      title="Аутентификация"
+      submit-text="Войти"
+      error-text="Неверные данные для входа"
+      :has-error="serverError"
+      @submit="formSubmit"
+  >
+    <app-input
+        v-model="phone"
+        :validate="v$.phone"
     >
-      <app-input
-          label="Номер телефона"
-          v-model="phone"
-          :validate="v$.phone"
-      />
-      <app-input
-          label="Пароль"
-          type="password"
-          v-model="password"
-          :validate="v$.password"
-      />
-      <div class="checkbox-wrapper">
-        <app-checkbox label="Запомнить меня" v-model="remember"/>
-        <app-link text="Забыли пароль?" to="/forgot-password"/>
-      </div>
-      <template v-slot:footer>
-        <span class="text">Еще не имеете аккаунта? </span>
-        <app-link text="Зарегестрироваться" to="/register"/>
-      </template>
-    </app-form>
-  </app-wrapper>
+      Номер телефона
+    </app-input>
+    <app-input
+        type="password"
+        v-model="password"
+        :validate="v$.password"
+    >
+      Пароль
+    </app-input>
+    <div class="checkbox-wrapper">
+      <app-checkbox v-model="remember">Запомнить меня</app-checkbox>
+      <app-link to="/forgot-password">Забыли пароль?</app-link>
+    </div>
+    <template v-slot:footer>
+      <span class="text">Еще не имеете аккаунта? </span>
+      <app-link to="/register">Зарегистрироваться</app-link>
+    </template>
+  </app-form>
 </template>
 
 <script>
 import useVuelidate from '@vuelidate/core';
 import { required, maxLength, numeric, helpers } from '@vuelidate/validators';
-import AppWrapper from "../components/AppWrapper";
 import AppForm from "../components/AppForm";
 import AppLink from "../components/AppLink";
 import AppInput from "../components/AppInput";
@@ -42,7 +41,6 @@ import { login } from "../custom/methodsApi";
 export default {
   name: "LoginPage",
   components: {
-    AppWrapper,
     AppForm,
     AppLink,
     AppInput,
