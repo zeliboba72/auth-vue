@@ -1,5 +1,9 @@
 import axios from "axios";
 
+const axiosInstance = axios.create({
+    baseURL: 'https://backend-front-test.dev.echo-company.ru/api/',
+});
+
 export function getUser(justCheck) {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -7,13 +11,10 @@ export function getUser(justCheck) {
             return resolve(false);
         });
     }
-
-    return axios({
-        method: 'get',
-        url: 'https://backend-front-test.dev.echo-company.ru/api/user',
+    return axiosInstance.get('user', {
         headers: {
             'Authorization': token,
-        },
+        }
     }).then((response) => {
         if (justCheck) {
             return true;
@@ -26,13 +27,9 @@ export function getUser(justCheck) {
 }
 
 export function login (phone, password, remember) {
-    return axios({
-        method: 'post',
-        url: 'https://backend-front-test.dev.echo-company.ru/api/auth/login',
-        data: {
-            phone: phone,
-            password: password,
-        },
+    return axiosInstance.post('auth/login', {
+        phone: phone,
+        password: password,
     }).then((response) => {
         localStorage.setItem('token', response.data.token);
         if (!remember) {
@@ -47,20 +44,49 @@ export function login (phone, password, remember) {
 }
 
 export function registration (firstName, lastName, phone, password) {
-    return axios({
-        method: 'post',
-        url: 'https://backend-front-test.dev.echo-company.ru/api/user/registration',
-        data: {
-            first_name: firstName,
-            last_name: lastName,
-            phone: phone,
-            password: password,
-        },
+    return axiosInstance.post('user/registration', {
+        first_name: firstName,
+        last_name: lastName,
+        phone: phone,
+        password: password,
     }).then((response) => {
         localStorage.setItem('token', response.data.token);
         return true;
     }).catch(() => {
         return false;
+    });
+}
+
+export function sendSms(phone) {
+    return axiosInstance.post('user/forgot-start', {
+        phone: phone,
+    }).then(() => {
+        return {
+            success: true,
+        };
+    }).catch(() => {
+        return {
+            success: false,
+            message: "Такой телефон не зарегистрирован",
+        };
+    });
+}
+
+export function resetPassword(phone, code, password) {
+    return axiosInstance.post('user/forgot-end', {
+        phone: phone,
+        code: code,
+        password: password,
+    }).then((response) => {
+        localStorage.setItem('token', response.data.token);
+        return {
+            success: true,
+        };
+    }).catch(() => {
+        return {
+            success: false,
+            message: "Неверный код из СМС",
+        };
     });
 }
 

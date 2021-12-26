@@ -1,5 +1,5 @@
 <template>
-  <div class="app-input" :class="{error:hasError}">
+  <div class="app-input" :class="{error:errorMessage}">
     <label class="app-input__label">
       <span class="app-input__label-text"><slot/>:</span>
       <input class="app-input__control"
@@ -9,7 +9,7 @@
              @blur="$emit('blur')"
       />
     </label>
-    <small v-if="hasError" class="app-input__error-text">{{ firstErrorMessage }}</small>
+    <small v-if="errorMessage" class="app-input__error-text">{{ errorMessage }}</small>
   </div>
 </template>
 
@@ -24,29 +24,11 @@ export default {
     modelValue: {
       type: String,
     },
-    validate: {
-      type: Object,
-    },
+    errorMessage: {
+      type: String,
+    }
   },
   emits: ['update:modelValue', 'blur'],
-  computed: {
-    firstErrorMessage() {
-      if (!this.validate.$error) {
-        return;
-      }
-      let errorMessages = [];
-      for (const error of this.validate.$errors) {
-        errorMessages.push(error.$message);
-      }
-      return errorMessages[0];
-    },
-    hasError() {
-      if (!this.validate) {
-        return;
-      }
-      return this.validate.$error;
-    }
-  }
 }
 </script>
 

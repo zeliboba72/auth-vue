@@ -1,7 +1,7 @@
 <template>
   <form class="app-form" @submit.prevent="$emit('submit')">
     <h2 class="app-form__title">{{ title }}</h2>
-    <p v-if="hasError" class="app-form__error">{{ errorText }}</p>
+    <p v-if="errorText" class="app-form__error">{{ errorText }}</p>
     <slot/>
     <div class="app-form__button-wrapper">
       <app-button
@@ -35,9 +35,6 @@ export default {
     },
     errorText: {
       type: String,
-    },
-    hasError: {
-      type: Boolean,
     },
   },
   emits: ['submit'],
