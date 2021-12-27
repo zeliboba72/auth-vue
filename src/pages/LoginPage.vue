@@ -12,14 +12,13 @@
       >
         Номер телефона
       </app-input>
-      <app-input
-          type="password"
+      <app-input-password
           v-model="password"
           :error-message="errorMessagePassword"
           @blur="v$.password.$touch"
       >
         Пароль
-      </app-input>
+      </app-input-password>
       <app-checkbox class="login-page__checkbox" v-model="remember">Запомнить меня</app-checkbox>
       <template v-slot:footer>
         <div class="login-page__footer-links-wrapper">
@@ -37,6 +36,7 @@ import {required, maxLength, minLength, numeric, helpers} from '@vuelidate/valid
 import AppForm from "../components/AppForm";
 import AppLink from "../components/AppLink";
 import AppInput from "../components/AppInput";
+import AppInputPassword from "../components/AppInputPassword";
 import AppCheckbox from "../components/AppCheckbox";
 import { login } from "../custom/methodsApi";
 export default {
@@ -45,6 +45,7 @@ export default {
     AppForm,
     AppLink,
     AppInput,
+    AppInputPassword,
     AppCheckbox
   },
   data() {

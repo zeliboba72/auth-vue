@@ -26,22 +26,20 @@
       >
         Телефон
       </app-input>
-      <app-input
-          type="password"
+      <app-input-password
           v-model="password"
           :error-message="errorMessagePassword"
           @blur="v$.password.$touch"
       >
         Пароль
-      </app-input>
-      <app-input
-          type="password"
+      </app-input-password>
+      <app-input-password
           v-model="confirmPassword"
           :error-message="errorMessageConfirmPassword"
           @blur="v$.confirmPassword.$touch"
       >
         Пароль еще раз
-      </app-input>
+      </app-input-password>
       <template v-slot:footer>
         <app-link :to="{ name: 'login-page' }">Уже зарегистрированы?</app-link>
       </template>
@@ -54,6 +52,7 @@ import useVuelidate from '@vuelidate/core';
 import { required, maxLength, minLength, numeric, sameAs, helpers } from '@vuelidate/validators';
 import AppForm from "../components/AppForm";
 import AppInput from "../components/AppInput";
+import AppInputPassword from "../components/AppInputPassword";
 import AppLink from "../components/AppLink";
 import { registration } from "../custom/methodsApi";
 
@@ -63,6 +62,7 @@ export default {
     AppForm,
     AppLink,
     AppInput,
+    AppInputPassword,
   },
   data() {
     return {

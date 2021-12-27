@@ -3,7 +3,7 @@
     <label class="app-input__label">
       <span class="app-input__label-text"><slot/></span>
       <input class="app-input__control"
-             :type="type"
+             type="text"
              :value="modelValue"
              @input="$emit('update:modelValue', $event.target.value)"
              @blur="$emit('blur')"
@@ -17,10 +17,6 @@
 export default {
   name: "AppInput",
   props: {
-    type: {
-      type: String,
-      default: "text",
-    },
     modelValue: {
       type: String,
     },

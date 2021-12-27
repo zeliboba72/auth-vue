@@ -28,22 +28,20 @@
       >
         Код из СМС
       </app-input>
-      <app-input
-          type="password"
+      <app-input-password
           v-model="password"
           :error-message="errorMessagePassword"
           @blur="v$.password.$touch"
       >
         Новый пароль
-      </app-input>
-      <app-input
-          type="password"
+      </app-input-password>
+      <app-input-password
           v-model="confirmPassword"
           :error-message="errorMessageConfirmPassword"
           @blur="v$.confirmPassword.$touch"
       >
         Новый пароль еще раз
-      </app-input>
+      </app-input-password>
       <template v-slot:footer>
         <div class="forgot-password-page__footer-links-wrapper">
           <app-link class="forgot-password-page__footer-link" :to="{ name: 'login-page' }">Вспомнил пароль!</app-link>
@@ -56,6 +54,7 @@
 <script>
 import AppForm from "../components/AppForm";
 import AppInput from "../components/AppInput";
+import AppInputPassword from "../components/AppInputPassword";
 import AppLink from "../components/AppLink";
 import AppButton from "../components/AppButton";
 import useVuelidate from '@vuelidate/core';
@@ -68,6 +67,7 @@ export default {
     AppButton,
     AppLink,
     AppInput,
+    AppInputPassword,
     AppForm,
   },
   data() {
