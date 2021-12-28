@@ -170,12 +170,19 @@ export default {
         this.timerId = null;
       }
     },
-    phone() {
+    phone(newValue) {
+      localStorage.setItem('forgot-password_phone', newValue);
       this.serverErrorMessages.phone = null;
     },
     code() {
       this.serverErrorMessages.code = null;
     },
+  },
+  created() {
+    const oldPhoneInput = localStorage.getItem('forgot-password_phone');
+    if (oldPhoneInput) {
+      this.phone = oldPhoneInput;
+    }
   },
   methods: {
     sendSms() {

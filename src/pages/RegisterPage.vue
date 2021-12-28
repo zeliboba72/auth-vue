@@ -154,8 +154,29 @@ export default {
     }
   },
   watch: {
-    phone() {
+    firstName(newValue) {
+      localStorage.setItem('register_firstName', newValue);
+    },
+    lastName(newValue) {
+      localStorage.setItem('register_lastName', newValue);
+    },
+    phone(newValue) {
       this.serverErrorMessage = null;
+      localStorage.setItem('register_phone', newValue);
+    }
+  },
+  created() {
+    const oldFirstNameInput = localStorage.getItem('register_firstName');
+    const oldLastNameInput = localStorage.getItem('register_lastName');
+    const oldPhoneInput = localStorage.getItem('register_phone');
+    if (oldFirstNameInput) {
+      this.firstName = oldFirstNameInput;
+    }
+    if (oldLastNameInput) {
+      this.lastName = oldLastNameInput;
+    }
+    if (oldPhoneInput) {
+      this.phone = oldPhoneInput;
     }
   },
   methods: {

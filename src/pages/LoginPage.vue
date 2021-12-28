@@ -103,6 +103,15 @@ export default {
       if (newValue) {
         this.serverErrorMessage = null;
       }
+    },
+    phone(newValue) {
+      localStorage.setItem('login_phone', newValue);
+    }
+  },
+  created() {
+    const oldPhoneInput = localStorage.getItem('login_phone');
+    if (oldPhoneInput) {
+      this.phone = oldPhoneInput;
     }
   },
   methods: {
