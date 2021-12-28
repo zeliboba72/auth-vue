@@ -77,6 +77,7 @@ export default {
       password: null,
       confirmPassword: null,
       serverErrorMessage: null,
+      submitting: false,
     }
   },
   validations () {
@@ -159,7 +160,7 @@ export default {
   },
   methods: {
     submitForm() {
-      if (this.serverErrorMessage) {
+      if (this.serverErrorMessage || this.submitting) {
         return;
       }
 
@@ -168,8 +169,10 @@ export default {
         return;
       }
 
+      this.submitting = true;
       registration(this.firstName, this.lastName, this.normalizePhone, this.password)
           .then((result) => {
+            this.submitting = false;
             if (result.success) {
               this.$router.push({ name: 'user-page' });
             } else {

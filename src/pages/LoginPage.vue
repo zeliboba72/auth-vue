@@ -57,6 +57,7 @@ export default {
       password: null,
       remember: false,
       serverErrorMessage: null,
+      submitting: false,
     }
   },
   validations () {
@@ -106,7 +107,7 @@ export default {
   },
   methods: {
     formSubmit() {
-      if (this.serverErrorMessage) {
+      if (this.serverErrorMessage || this.submitting) {
         return;
       }
 
@@ -115,8 +116,10 @@ export default {
         return;
       }
 
+      this.submitting = true;
       login(this.normalizePhone, this.password, this.remember)
           .then((result) => {
+            this.submitting = false;
             if (result.success) {
               this.$router.push({ name: 'user-page' });
             } else {

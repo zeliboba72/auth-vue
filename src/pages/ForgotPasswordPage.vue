@@ -88,6 +88,7 @@ export default {
           code: null,
       },
       sentCode: false,
+      submitting: false,
     }
   },
   validations() {
@@ -178,11 +179,14 @@ export default {
   },
   methods: {
     sendSms() {
-      if (this.v$.phone.$invalid || this.timer || this.serverErrorMessages.phone) {
+      if (this.v$.phone.$invalid || this.timer || this.serverErrorMessages.phone || this.submitting) {
         this.v$.phone.$touch();
         return;
       }
+
+      this.submitting = true;
       sendSms(this.normalizePhone).then((result) => {
+        this.submitting = false;
         if (!result.success) {
           this.serverErrorMessages.phone = result.message;
         } else {
@@ -192,16 +196,24 @@ export default {
       });
     },
     onSubmit() {
+      if (this.submitting) {
+        return;
+      }
+
       if (!this.sentCode) {
         this.serverErrorMessages.phone = 'Не отправлен код подтверждения'
         return;
       }
+
       this.v$.$validate();
       if (this.v$.$error || this.serverErrorMessages.phone || this.serverErrorMessages.code) {
         return;
       }
+
+      this.submitting = true;
       resetPassword(this.normalizePhone, this.normalizeCode, this.password)
           .then((result) => {
+            this.submitting = false;
             if (result.success) {
               this.$router.push({ name: 'user-page' });
             } else {
