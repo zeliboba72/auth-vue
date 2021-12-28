@@ -5,13 +5,15 @@
         submit-text="Войти"
         @submit="formSubmit"
     >
-      <app-input
+      <app-input-mask
           v-model="phone"
           :error-message="errorMessagePhone"
+          mask="+7 (###) ###-##-##"
+          placeholder="+7 (___) ___-__-__"
           @blur="v$.phone.$touch"
       >
         Номер телефона
-      </app-input>
+      </app-input-mask>
       <app-input-password
           v-model="password"
           :error-message="errorMessagePassword"
@@ -32,10 +34,10 @@
 
 <script>
 import useVuelidate from '@vuelidate/core';
-import {required, maxLength, minLength, numeric, helpers} from '@vuelidate/validators';
+import {required, minLength, maxLength, helpers} from '@vuelidate/validators';
 import AppForm from "../components/AppForm";
 import AppLink from "../components/AppLink";
-import AppInput from "../components/AppInput";
+import AppInputMask from "../components/AppInputMask";
 import AppInputPassword from "../components/AppInputPassword";
 import AppCheckbox from "../components/AppCheckbox";
 import { login } from "../custom/methodsApi";
@@ -44,7 +46,7 @@ export default {
   components: {
     AppForm,
     AppLink,
-    AppInput,
+    AppInputMask,
     AppInputPassword,
     AppCheckbox
   },
@@ -61,9 +63,7 @@ export default {
     return {
       phone: {
         required: helpers.withMessage('Поле обязательно для заполнения', required),
-        maxLength: helpers.withMessage('Поле обязательно для заполнения', maxLength(11)),
-        minLength: helpers.withMessage('Поле обязательно для заполнения', minLength(11)),
-        numeric: helpers.withMessage('Поле должно содержать только цифры', numeric),
+        minLength: helpers.withMessage('Поле обязательно для заполнения', minLength(18)),
       },
       password: {
         required: helpers.withMessage('Поле обязательно для заполнения', required),
@@ -89,6 +89,12 @@ export default {
       } else {
         return null;
       }
+    },
+    normalizePhone() {
+      if (this.phone) {
+        return this.phone.replace(/[^\d]/g, '');
+      }
+      return null;
     }
   },
   watch: {
@@ -109,7 +115,7 @@ export default {
         return;
       }
 
-      login(this.phone, this.password, this.remember)
+      login(this.normalizePhone, this.password, this.remember)
           .then((result) => {
             if (result.success) {
               this.$router.push({ name: 'user-page' });

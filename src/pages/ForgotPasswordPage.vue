@@ -6,13 +6,15 @@
         @submit="onSubmit"
     >
       <div class="forgot-password-page__sms-wrapper">
-        <app-input
+        <app-input-mask
             v-model="phone"
             :error-message="errorMessagePhone"
+            mask="+7 (###) ###-##-##"
+            placeholder="+7 (___) ___-__-__"
             @blur="v$.phone.$touch"
         >
           Телефон
-        </app-input>
+        </app-input-mask>
         <p class="forgot-password-page__resend-text" v-if="timer">Отправить повторно через {{ timer }} секунд</p>
         <app-button
             :disabled="disabledSendButton"
@@ -21,13 +23,15 @@
           Отправить код
         </app-button>
       </div>
-      <app-input
+      <app-input-mask
           v-model="code"
           :error-message="errorMessageCode"
+          mask="# - # - # - #"
+          placeholder="0 - 0 - 0 - 0"
           @blur="v$.code.$touch"
       >
         Код из СМС
-      </app-input>
+      </app-input-mask>
       <app-input-password
           v-model="password"
           :error-message="errorMessagePassword"
@@ -53,12 +57,12 @@
 </template>
 <script>
 import AppForm from "../components/AppForm";
-import AppInput from "../components/AppInput";
+import AppInputMask from "../components/AppInputMask";
 import AppInputPassword from "../components/AppInputPassword";
 import AppLink from "../components/AppLink";
 import AppButton from "../components/AppButton";
 import useVuelidate from '@vuelidate/core';
-import {required, maxLength, minLength, numeric, helpers, sameAs} from '@vuelidate/validators';
+import {required, maxLength, minLength, helpers, sameAs} from '@vuelidate/validators';
 import { sendSms, resetPassword } from "../custom/methodsApi";
 
 export default {
@@ -66,7 +70,7 @@ export default {
   components: {
     AppButton,
     AppLink,
-    AppInput,
+    AppInputMask,
     AppInputPassword,
     AppForm,
   },
@@ -90,15 +94,11 @@ export default {
     return {
       phone: {
         required: helpers.withMessage('Поле обязательно для заполнения', required),
-        maxLength: helpers.withMessage('Поле обязательно для заполнения', maxLength(11)),
-        minLength: helpers.withMessage('Поле обязательно для заполнения', minLength(11)),
-        numeric: helpers.withMessage('Поле должно содержать только цифры', numeric),
+        minLength: helpers.withMessage('Поле обязательно для заполнения', minLength(18)),
       },
       code: {
         required: helpers.withMessage('Поле обязательно для заполнения', required),
-        maxLength: helpers.withMessage('Поле обязательно для заполнения', maxLength(4)),
-        minLength: helpers.withMessage('Поле обязательно для заполнения', minLength(4)),
-        numeric: helpers.withMessage('Поле должно содержать только цифры', numeric),
+        minLength: helpers.withMessage('Поле обязательно для заполнения', minLength(13)),
       },
       password: {
         required: helpers.withMessage('Поле обязательно для заполнения', required),
@@ -147,6 +147,18 @@ export default {
       } else {
         return null;
       }
+    },
+    normalizePhone() {
+      if (this.phone) {
+        return this.phone.replace(/[^\d]/g, '');
+      }
+      return null;
+    },
+    normalizeCode() {
+      if (this.code) {
+        return this.code.replace(/[^\d]/g, '');
+      }
+      return null;
     }
   },
   watch: {
@@ -170,7 +182,7 @@ export default {
         this.v$.phone.$touch();
         return;
       }
-      sendSms(this.phone).then((result) => {
+      sendSms(this.normalizePhone).then((result) => {
         if (!result.success) {
           this.serverErrorMessages.phone = result.message;
         } else {
@@ -188,7 +200,7 @@ export default {
       if (this.v$.$error || this.serverErrorMessages.phone || this.serverErrorMessages.code) {
         return;
       }
-      resetPassword(this.phone, this.code, this.password)
+      resetPassword(this.normalizePhone, this.normalizeCode, this.password)
           .then((result) => {
             if (result.success) {
               this.$router.push({ name: 'user-page' });
