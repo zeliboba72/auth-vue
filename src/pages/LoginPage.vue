@@ -115,7 +115,7 @@ export default {
     }
   },
   methods: {
-    formSubmit() {
+    async formSubmit() {
       if (this.serverErrorMessage || this.submitting) {
         return;
       }
@@ -126,17 +126,16 @@ export default {
       }
 
       this.submitting = true;
-      login(this.normalizePhone, this.password, this.remember)
-          .then((result) => {
-            this.submitting = false;
-            if (result.success) {
-              this.$router.push({ name: 'user-page' });
-            } else {
-              this.v$.$reset();
-              this.password = null;
-              this.serverErrorMessage = result.message;
-            }
-      });
+      const result = await login(this.normalizePhone, this.password, this.remember);
+      this.submitting = false;
+
+      if (result.success) {
+        this.$router.push({ name: 'user-page' });
+      } else {
+        this.v$.$reset();
+        this.password = null;
+        this.serverErrorMessage = result.message;
+      }
     }
   }
 }

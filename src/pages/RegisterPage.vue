@@ -180,7 +180,7 @@ export default {
     }
   },
   methods: {
-    submitForm() {
+    async submitForm() {
       if (this.serverErrorMessage || this.submitting) {
         return;
       }
@@ -191,18 +191,17 @@ export default {
       }
 
       this.submitting = true;
-      registration(this.firstName, this.lastName, this.normalizePhone, this.password)
-          .then((result) => {
-            this.submitting = false;
-            if (result.success) {
-              this.$router.push({ name: 'user-page' });
-            } else {
-              this.serverErrorMessage = result.message;
-              this.password = null;
-              this.confirmPassword = null;
-              this.v$.$reset();
-            }
-      });
+      const result = await registration(this.firstName, this.lastName, this.normalizePhone, this.password);
+      this.submitting = false;
+
+      if (result.success) {
+        this.$router.push({ name: 'user-page' });
+      } else {
+        this.serverErrorMessage = result.message;
+        this.password = null;
+        this.confirmPassword = null;
+        this.v$.$reset();
+      }
     }
   }
 }

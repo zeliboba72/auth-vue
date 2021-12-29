@@ -185,24 +185,24 @@ export default {
     }
   },
   methods: {
-    sendSms() {
+    async sendSms() {
       if (this.v$.phone.$invalid || this.timer || this.serverErrorMessages.phone || this.submitting) {
         this.v$.phone.$touch();
         return;
       }
 
       this.submitting = true;
-      sendSms(this.normalizePhone).then((result) => {
-        this.submitting = false;
-        if (!result.success) {
-          this.serverErrorMessages.phone = result.message;
-        } else {
-          this.startTimer();
-          this.sentCode = true;
-        }
-      });
+      const result = await sendSms(this.normalizePhone);
+      this.submitting = false;
+
+      if (result.success) {
+        this.startTimer();
+        this.sentCode = true;
+      } else {
+        this.serverErrorMessages.phone = result.message;
+      }
     },
-    onSubmit() {
+    async onSubmit() {
       if (this.submitting) {
         return;
       }
@@ -218,15 +218,14 @@ export default {
       }
 
       this.submitting = true;
-      resetPassword(this.normalizePhone, this.normalizeCode, this.password)
-          .then((result) => {
-            this.submitting = false;
-            if (result.success) {
-              this.$router.push({ name: 'user-page' });
-            } else {
-              this.serverErrorMessages.code = result.message;
-            }
-      })
+      const result = await resetPassword(this.normalizePhone, this.normalizeCode, this.password);
+      this.submitting = false;
+
+      if (result.success) {
+        this.$router.push({ name: 'user-page' });
+      } else {
+        this.serverErrorMessages.code = result.message;
+      }
     },
     startTimer() {
       this.timer = 20;

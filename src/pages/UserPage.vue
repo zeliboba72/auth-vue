@@ -1,28 +1,23 @@
 <template>
   <div class="user-page">
-    <h1 v-if="username" class="user-page__title">Здравствуйте, {{ this.username }} !</h1>
+    <h1 class="user-page__title">Здравствуйте, {{ username }} !</h1>
     <app-button @click="onLogout">Выйти</app-button>
   </div>
 </template>
 
 <script>
 import AppButton from "../components/AppButton";
-import { getUser, logout } from "../custom/methodsApi";
+import { logout } from "../custom/methodsApi";
 
 export default {
   name: 'UserPage',
   components: {
     AppButton,
   },
-  data() {
-    return {
-      username: null,
+  computed: {
+    username() {
+      return this.$store.state.username;
     }
-  },
-  created() {
-    getUser().then((result) => {
-      this.username = result.first_name;
-    });
   },
   methods: {
     onLogout() {

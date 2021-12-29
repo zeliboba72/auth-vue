@@ -3,7 +3,7 @@ import UserPage from "../pages/UserPage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
-import { getUser } from "../custom/methodsApi";
+import {checkAuth} from "../custom/methodsApi";
 
 const routes = [
   {
@@ -45,16 +45,21 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  getUser(true).then((result) => {
-    if (to.meta.needAuth && !result) {
-      return next({ name: 'login-page' });
-    } else if (to.meta.notForAuth && result) {
-      return next({ name: 'user-page' });
+router.beforeEach(async (to, from, next) => {
+  const isAuth = await checkAuth();
+  if (to.meta.needAuth) {
+    if (isAuth) {
+      next();
     } else {
-      return next();
+      next({ name: "login-page"})
     }
-  });
+  } else if (to.meta.notForAuth) {
+    if (!isAuth) {
+      next();
+    } else {
+      next({ name: "user-page" });
+    }
+  }
 })
 
 export default router
