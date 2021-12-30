@@ -6,7 +6,7 @@
         @submit="onSubmit"
     >
       <div class="forgot-password-page__sms-wrapper">
-        <app-input-mask
+        <app-input
             v-model="phone"
             :error-message="errorMessagePhone"
             mask="+7 (###) ###-##-##"
@@ -14,7 +14,7 @@
             @blur="v$.phone.$touch"
         >
           Телефон
-        </app-input-mask>
+        </app-input>
         <p class="forgot-password-page__resend-text" v-if="timer">Отправить повторно через {{ timer }} секунд</p>
         <app-button
             :disabled="disabledSendButton"
@@ -23,7 +23,7 @@
           Отправить код
         </app-button>
       </div>
-      <app-input-mask
+      <app-input
           v-model="code"
           :error-message="errorMessageCode"
           mask="# - # - # - #"
@@ -31,7 +31,7 @@
           @blur="v$.code.$touch"
       >
         Код из СМС
-      </app-input-mask>
+      </app-input>
       <app-input-password
           v-model="password"
           :error-message="errorMessagePassword"
@@ -57,7 +57,7 @@
 </template>
 <script>
 import AppForm from "../components/AppForm";
-import AppInputMask from "../components/AppInputMask";
+import AppInput from "../components/AppInput";
 import AppInputPassword from "../components/AppInputPassword";
 import AppLink from "../components/AppLink";
 import AppButton from "../components/AppButton";
@@ -70,7 +70,7 @@ export default {
   components: {
     AppButton,
     AppLink,
-    AppInputMask,
+    AppInput,
     AppInputPassword,
     AppForm,
   },

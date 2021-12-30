@@ -5,7 +5,7 @@
         submit-text="Войти"
         @submit="formSubmit"
     >
-      <app-input-mask
+      <app-input
           v-model="phone"
           :error-message="errorMessagePhone"
           mask="+7 (###) ###-##-##"
@@ -13,7 +13,7 @@
           @blur="v$.phone.$touch"
       >
         Номер телефона
-      </app-input-mask>
+      </app-input>
       <app-input-password
           v-model="password"
           :error-message="errorMessagePassword"
@@ -37,7 +37,7 @@ import useVuelidate from '@vuelidate/core';
 import {required, minLength, maxLength, helpers} from '@vuelidate/validators';
 import AppForm from "../components/AppForm";
 import AppLink from "../components/AppLink";
-import AppInputMask from "../components/AppInputMask";
+import AppInput from "../components/AppInput";
 import AppInputPassword from "../components/AppInputPassword";
 import AppCheckbox from "../components/AppCheckbox";
 import { login } from "../custom/methodsApi";
@@ -46,7 +46,7 @@ export default {
   components: {
     AppForm,
     AppLink,
-    AppInputMask,
+    AppInput,
     AppInputPassword,
     AppCheckbox
   },

@@ -3,7 +3,8 @@
     <label class="app-checkbox__label">
       <input
           class="app-checkbox__control"
-          type="checkbox" :checked="modelValue"
+          type="checkbox"
+          :checked="modelValue"
           @change="$emit('update:modelValue', $event.target.checked)"
       >
       <span class="app-checkbox__label-text"><slot/></span>

@@ -3,6 +3,16 @@
     <label class="app-input__label">
       <span class="app-input__label-text"><slot/></span>
       <input class="app-input__control"
+             v-if="hasMask"
+             type="text"
+             v-mask="mask"
+             :placeholder="placeholder"
+             :value="modelValue"
+             @input="$emit('update:modelValue', $event.target.value)"
+             @blur="$emit('blur')"
+      />
+      <input class="app-input__control"
+             v-else
              type="text"
              :value="modelValue"
              @input="$emit('update:modelValue', $event.target.value)"
@@ -14,17 +24,30 @@
 </template>
 
 <script>
+import {mask} from 'vue-the-mask'
 export default {
   name: "AppInput",
+  directives: {mask},
   props: {
     modelValue: {
       type: String,
     },
     errorMessage: {
       type: String,
-    }
+    },
+    mask: {
+      type: String,
+    },
+    placeholder: {
+      type: String,
+    },
   },
   emits: ['update:modelValue', 'blur'],
+  computed: {
+    hasMask() {
+      return Boolean(this.mask) && Boolean(this.placeholder);
+    }
+  }
 }
 </script>
 

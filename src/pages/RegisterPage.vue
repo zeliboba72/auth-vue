@@ -19,7 +19,7 @@
       >
         Фамилия
       </app-input>
-      <app-input-mask
+      <app-input
           v-model="phone"
           :error-message="errorMessagePhone"
           mask="+7 (###) ###-##-##"
@@ -27,7 +27,7 @@
           @blur="v$.phone.$touch"
       >
         Телефон
-      </app-input-mask>
+      </app-input>
       <app-input-password
           v-model="password"
           :error-message="errorMessagePassword"
@@ -54,7 +54,6 @@ import useVuelidate from '@vuelidate/core';
 import { required, maxLength, minLength, sameAs, helpers } from '@vuelidate/validators';
 import AppForm from "../components/AppForm";
 import AppInput from "../components/AppInput";
-import AppInputMask from "../components/AppInputMask";
 import AppInputPassword from "../components/AppInputPassword";
 import AppLink from "../components/AppLink";
 import { registration } from "../custom/methodsApi";
@@ -65,7 +64,6 @@ export default {
     AppForm,
     AppLink,
     AppInput,
-    AppInputMask,
     AppInputPassword,
   },
   data() {
