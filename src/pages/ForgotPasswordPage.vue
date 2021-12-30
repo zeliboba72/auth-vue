@@ -64,6 +64,7 @@ import AppButton from "../components/AppButton";
 import useVuelidate from '@vuelidate/core';
 import {required, maxLength, minLength, helpers, sameAs} from '@vuelidate/validators';
 import { sendSms, resetPassword } from "../custom/methodsApi";
+import { Routes } from "../router/routes";
 
 export default {
   name: 'ForgotPasswordPage',
@@ -222,7 +223,7 @@ export default {
       this.submitting = false;
 
       if (result.success) {
-        this.$router.push({ name: 'user-page' });
+        this.$router.push({ name: Routes.profile });
       } else {
         this.serverErrorMessages.code = result.message;
       }

@@ -41,6 +41,7 @@ import AppInput from "../components/AppInput";
 import AppInputPassword from "../components/AppInputPassword";
 import AppCheckbox from "../components/AppCheckbox";
 import { login } from "../custom/methodsApi";
+import { Routes } from "../router/routes";
 export default {
   name: "LoginPage",
   components: {
@@ -130,7 +131,7 @@ export default {
       this.submitting = false;
 
       if (result.success) {
-        this.$router.push({ name: 'user-page' });
+        this.$router.push({ name: Routes.profile });
       } else {
         this.v$.$reset();
         this.password = null;

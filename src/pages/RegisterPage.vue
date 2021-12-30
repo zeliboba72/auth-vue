@@ -57,6 +57,7 @@ import AppInput from "../components/AppInput";
 import AppInputPassword from "../components/AppInputPassword";
 import AppLink from "../components/AppLink";
 import { registration } from "../custom/methodsApi";
+import { Routes } from "../router/routes";
 
 export default {
   name: 'RegisterPage',
@@ -193,7 +194,7 @@ export default {
       this.submitting = false;
 
       if (result.success) {
-        this.$router.push({ name: 'user-page' });
+        this.$router.push({ name: Routes.profile });
       } else {
         this.serverErrorMessage = result.message;
         this.password = null;

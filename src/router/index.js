@@ -4,11 +4,12 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import {checkAuth} from "../custom/methodsApi";
+import { Routes } from "@/router/routes";
 
 const routes = [
   {
     path: '/',
-    name: 'user-page',
+    name: Routes.profile,
     component: UserPage,
     meta: {
       needAuth: true,
@@ -16,7 +17,7 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'login-page',
+    name: Routes.login,
     component: LoginPage,
     meta: {
       notForAuth: true,
@@ -24,7 +25,7 @@ const routes = [
   },
   {
     path: '/register',
-    name: 'register-page',
+    name: Routes.registration,
     component: RegisterPage,
     meta: {
       notForAuth: true,
@@ -32,7 +33,7 @@ const routes = [
   },
   {
     path: '/forgot-password',
-    name: 'forgot-password-page',
+    name: Routes.forgotPassword,
     component: ForgotPasswordPage,
     meta: {
       notForAuth: true,
@@ -51,13 +52,13 @@ router.beforeEach(async (to, from, next) => {
     if (isAuth) {
       next();
     } else {
-      next({ name: "login-page"})
+      next({ name: Routes.login})
     }
   } else if (to.meta.notForAuth) {
     if (!isAuth) {
       next();
     } else {
-      next({ name: "user-page" });
+      next({ name: Routes.profile });
     }
   }
 })
