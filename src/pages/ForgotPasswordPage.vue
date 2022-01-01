@@ -48,8 +48,18 @@
       </app-input-password>
       <template v-slot:footer>
         <div class="forgot-password-page__footer-links-wrapper">
-          <app-link class="forgot-password-page__footer-link" :to="{ name: loginUrlName }">Вспомнил пароль!</app-link>
-          <app-link class="forgot-password-page__footer-link" :to="{ name: registrationUrlName }">Еще не имеете аккаунта?</app-link>
+          <app-link
+              class="forgot-password-page__footer-link"
+              :to="{ name: $store.state.routes.login }"
+          >
+            Вспомнил пароль!
+          </app-link>
+          <app-link
+              class="forgot-password-page__footer-link"
+              :to="{ name: $store.state.routes.registration }"
+          >
+            Еще не имеете аккаунта?
+          </app-link>
         </div>
       </template>
     </app-form>
@@ -64,7 +74,6 @@ import AppButton from "../components/AppButton";
 import useVuelidate from '@vuelidate/core';
 import {required, maxLength, minLength, helpers, sameAs} from '@vuelidate/validators';
 import { sendSms, resetPassword } from "../custom/methodsApi";
-import { Routes } from "../router/routes";
 import { normalizeString } from "../custom/utils";
 
 export default {
@@ -151,12 +160,6 @@ export default {
         return null;
       }
     },
-    registrationUrlName() {
-      return Routes.registration;
-    },
-    loginUrlName() {
-      return Routes.login;
-    },
   },
   watch: {
     timer(newValue) {
@@ -216,7 +219,7 @@ export default {
       this.submitting = false;
 
       if (result.success) {
-        this.$router.push({ name: Routes.profile });
+        this.$router.push({ name: this.$store.state.routes.profile });
       } else {
         this.serverErrorMessages.code = result.message;
       }

@@ -43,7 +43,7 @@
         Пароль еще раз
       </app-input-password>
       <template v-slot:footer>
-        <app-link :to="{ name: loginUrlName }">Уже зарегистрированы?</app-link>
+        <app-link :to="{ name: $store.state.routes.login }">Уже зарегистрированы?</app-link>
       </template>
     </app-form>
   </div>
@@ -57,7 +57,6 @@ import AppInput from "../components/AppInput";
 import AppInputPassword from "../components/AppInputPassword";
 import AppLink from "../components/AppLink";
 import { registration } from "../custom/methodsApi";
-import { Routes } from "../router/routes";
 import { normalizeString } from "../custom/utils";
 
 export default {
@@ -146,9 +145,6 @@ export default {
         return null;
       }
     },
-    loginUrlName() {
-      return Routes.login;
-    },
   },
   watch: {
     firstName(newValue) {
@@ -192,7 +188,7 @@ export default {
       this.submitting = false;
 
       if (result.success) {
-        this.$router.push({ name: Routes.profile });
+        this.$router.push({ name: this.$store.state.routes.profile });
       } else {
         this.serverErrorMessage = result.message;
         this.password = null;

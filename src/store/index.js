@@ -1,9 +1,11 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
+import { Routes } from '../router/routes';
 
 export default createStore({
   state: {
     login: false,
     username: null,
+    routes: Routes,
   },
   mutations: {
     login(state, payload) {

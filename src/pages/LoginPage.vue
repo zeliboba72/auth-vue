@@ -24,8 +24,18 @@
       <app-checkbox class="login-page__checkbox" v-model="remember">Запомнить меня</app-checkbox>
       <template v-slot:footer>
         <div class="login-page__footer-links-wrapper">
-          <app-link class="login-page__footer-link" :to="{ name: forgotPasswordUrlName }">Забыли пароль?</app-link>
-          <app-link class="login-page__footer-link" :to="{ name: registrationUrlName }">Еще не имеете аккаунта?</app-link>
+          <app-link
+              class="login-page__footer-link"
+              :to="{ name: $store.state.routes.forgotPassword }"
+          >
+            Забыли пароль?
+          </app-link>
+          <app-link
+              class="login-page__footer-link"
+              :to="{ name: $store.state.routes.registration }"
+          >
+            Еще не имеете аккаунта?
+          </app-link>
         </div>
       </template>
     </app-form>
@@ -41,7 +51,6 @@ import AppInput from "../components/AppInput";
 import AppInputPassword from "../components/AppInputPassword";
 import AppCheckbox from "../components/AppCheckbox";
 import { login } from "../custom/methodsApi";
-import { Routes } from "../router/routes";
 import { normalizeString } from "../custom/utils";
 
 export default {
@@ -94,12 +103,6 @@ export default {
         return null;
       }
     },
-    registrationUrlName() {
-      return Routes.registration;
-    },
-    forgotPasswordUrlName() {
-      return Routes.forgotPassword;
-    },
   },
   watch: {
     password(newValue) {
@@ -133,7 +136,7 @@ export default {
       this.submitting = false;
 
       if (result.success) {
-        this.$router.push({ name: Routes.profile });
+        this.$router.push({ name: this.$store.state.routes.profile });
       } else {
         this.v$.$reset();
         this.password = null;

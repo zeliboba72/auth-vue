@@ -8,7 +8,6 @@
 <script>
 import AppButton from "../components/AppButton";
 import { logout } from "../custom/methodsApi";
-import { Routes } from "../router/routes";
 
 export default {
   name: 'UserPage',
@@ -23,7 +22,7 @@ export default {
   methods: {
     onLogout() {
       logout();
-      this.$router.push({ name: Routes.login });
+      this.$router.push({ name: this.$store.state.routes.login });
     }
   }
 }
