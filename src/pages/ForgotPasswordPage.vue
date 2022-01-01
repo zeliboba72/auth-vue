@@ -5,7 +5,7 @@
         submit-text="Восстановить пароль"
         @submit="onSubmit"
     >
-      <div class="forgot-password-page__sms-wrapper">
+      <div class="forgot-password-page__header-wrapper">
         <app-input
             v-model="phone"
             :error-message="errorMessagePhone"
@@ -65,6 +65,7 @@ import useVuelidate from '@vuelidate/core';
 import {required, maxLength, minLength, helpers, sameAs} from '@vuelidate/validators';
 import { sendSms, resetPassword } from "../custom/methodsApi";
 import { Routes } from "../router/routes";
+import { normalizeString } from "../custom/utils";
 
 export default {
   name: 'ForgotPasswordPage',
@@ -150,18 +151,6 @@ export default {
         return null;
       }
     },
-    normalizePhone() {
-      if (this.phone) {
-        return this.phone.replace(/[^\d]/g, '');
-      }
-      return null;
-    },
-    normalizeCode() {
-      if (this.code) {
-        return this.code.replace(/[^\d]/g, '');
-      }
-      return null;
-    },
     registrationUrlName() {
       return Routes.registration;
     },
@@ -172,9 +161,7 @@ export default {
   watch: {
     timer(newValue) {
       if (newValue < 1) {
-        this.stopTimer(this.timerId);
-        this.timer = null;
-        this.timerId = null;
+        this.stopTimer();
       }
     },
     phone(newValue) {
@@ -199,7 +186,7 @@ export default {
       }
 
       this.submitting = true;
-      const result = await sendSms(this.normalizePhone);
+      const result = await sendSms(normalizeString(this.phone));
       this.submitting = false;
 
       if (result.success) {
@@ -225,7 +212,7 @@ export default {
       }
 
       this.submitting = true;
-      const result = await resetPassword(this.normalizePhone, this.normalizeCode, this.password);
+      const result = await resetPassword(normalizeString(this.phone), normalizeString(this.code), this.password);
       this.submitting = false;
 
       if (result.success) {
@@ -254,7 +241,7 @@ export default {
   flex-grow: 1;
   max-width: 500px;
   margin: 0 auto;
-  &__sms-wrapper {
+  &__header-wrapper {
     margin-bottom: 30px;
   }
   &__resend-text {

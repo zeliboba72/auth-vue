@@ -42,6 +42,8 @@ import AppInputPassword from "../components/AppInputPassword";
 import AppCheckbox from "../components/AppCheckbox";
 import { login } from "../custom/methodsApi";
 import { Routes } from "../router/routes";
+import { normalizeString } from "../custom/utils";
+
 export default {
   name: "LoginPage",
   components: {
@@ -92,12 +94,6 @@ export default {
         return null;
       }
     },
-    normalizePhone() {
-      if (this.phone) {
-        return this.phone.replace(/[^\d]/g, '');
-      }
-      return null;
-    },
     registrationUrlName() {
       return Routes.registration;
     },
@@ -133,7 +129,7 @@ export default {
       }
 
       this.submitting = true;
-      const result = await login(this.normalizePhone, this.password, this.remember);
+      const result = await login(normalizeString(this.phone), this.password, this.remember);
       this.submitting = false;
 
       if (result.success) {

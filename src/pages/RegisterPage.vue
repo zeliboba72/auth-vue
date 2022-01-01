@@ -58,6 +58,7 @@ import AppInputPassword from "../components/AppInputPassword";
 import AppLink from "../components/AppLink";
 import { registration } from "../custom/methodsApi";
 import { Routes } from "../router/routes";
+import { normalizeString } from "../custom/utils";
 
 export default {
   name: 'RegisterPage',
@@ -145,12 +146,6 @@ export default {
         return null;
       }
     },
-    normalizePhone() {
-      if (this.phone) {
-        return this.phone.replace(/[^\d]/g, '');
-      }
-      return null;
-    },
     loginUrlName() {
       return Routes.login;
     },
@@ -193,7 +188,7 @@ export default {
       }
 
       this.submitting = true;
-      const result = await registration(this.firstName, this.lastName, this.normalizePhone, this.password);
+      const result = await registration(this.firstName, this.lastName, normalizeString(this.phone), this.password);
       this.submitting = false;
 
       if (result.success) {
