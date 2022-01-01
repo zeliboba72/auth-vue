@@ -44,11 +44,7 @@ export default {
   },
   methods: {
     toggleInputType() {
-      if (this.inputType === "password") {
-        this.inputType = "text";
-      } else {
-        this.inputType = "password";
-      }
+      this.inputType === "password" ? this.inputType = "text" : this.inputType = "password";
     }
   }
 }
