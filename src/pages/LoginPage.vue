@@ -44,7 +44,7 @@
 
 <script>
 import useVuelidate from '@vuelidate/core';
-import {required, minLength, maxLength, helpers} from '@vuelidate/validators';
+import { phoneRules, passwordRulesDefault } from "../custom/vuelidate/validationRules";
 import AppForm from "../components/AppForm";
 import AppLink from "../components/AppLink";
 import AppInput from "../components/AppInput";
@@ -74,14 +74,8 @@ export default {
   },
   validations () {
     return {
-      phone: {
-        required: helpers.withMessage('Поле обязательно для заполнения', required),
-        minLength: helpers.withMessage('Поле обязательно для заполнения', minLength(18)),
-      },
-      password: {
-        required: helpers.withMessage('Поле обязательно для заполнения', required),
-        maxLength: helpers.withMessage('Поле не должно превышать 255 символов', maxLength(255)),
-      },
+      phone: phoneRules,
+      password: passwordRulesDefault,
     }
   },
   computed: {

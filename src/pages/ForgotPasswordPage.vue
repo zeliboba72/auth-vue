@@ -72,7 +72,8 @@ import AppInputPassword from "../components/AppInputPassword";
 import AppLink from "../components/AppLink";
 import AppButton from "../components/AppButton";
 import useVuelidate from '@vuelidate/core';
-import {required, maxLength, minLength, helpers, sameAs} from '@vuelidate/validators';
+import { phoneRules, passwordRulesFull, passwordRulesConfirm, codeRules } from "../custom/vuelidate/validationRules";
+import validationMessages from "../custom/vuelidate/validationMessages";
 import { sendSms, resetPassword } from "../custom/methodsApi";
 import { normalizeString } from "../custom/utils";
 
@@ -104,24 +105,10 @@ export default {
   },
   validations() {
     return {
-      phone: {
-        required: helpers.withMessage('Поле обязательно для заполнения', required),
-        minLength: helpers.withMessage('Поле обязательно для заполнения', minLength(18)),
-      },
-      code: {
-        required: helpers.withMessage('Поле обязательно для заполнения', required),
-        minLength: helpers.withMessage('Поле обязательно для заполнения', minLength(13)),
-      },
-      password: {
-        required: helpers.withMessage('Поле обязательно для заполнения', required),
-        maxLength: helpers.withMessage('Поле не должно превышать 255 символов', maxLength(255)),
-        minLength: helpers.withMessage('Пароль должен состоять не менее чем из 8 символов', minLength(8)),
-        sameAs: helpers.withMessage('Пароли не совпадают', sameAs(this.confirmPassword)),
-      },
-      confirmPassword: {
-        required: helpers.withMessage('Поле обязательно для заполнения', required),
-        sameAs: helpers.withMessage('Пароли не совпадают', sameAs(this.password)),
-      },
+      phone: phoneRules,
+      code: codeRules,
+      password: passwordRulesFull,
+      confirmPassword: passwordRulesConfirm(this.password),
     }
   },
   computed: {
@@ -205,7 +192,7 @@ export default {
       }
 
       if (!this.sentCode) {
-        this.serverErrorMessages.phone = 'Не отправлен код подтверждения'
+        this.serverErrorMessages.phone = validationMessages.codeNotSent;
         return;
       }
 

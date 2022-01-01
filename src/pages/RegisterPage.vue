@@ -51,7 +51,7 @@
 
 <script>
 import useVuelidate from '@vuelidate/core';
-import { required, maxLength, minLength, sameAs, helpers } from '@vuelidate/validators';
+import { nameRules, phoneRules, passwordRulesFull, passwordRulesConfirm } from "../custom/vuelidate/validationRules";
 import AppForm from "../components/AppForm";
 import AppInput from "../components/AppInput";
 import AppInputPassword from "../components/AppInputPassword";
@@ -81,30 +81,11 @@ export default {
   },
   validations () {
     return {
-      firstName: {
-        required: helpers.withMessage('Поле обязательно для заполнения', required),
-        maxLength: helpers.withMessage('Поле не должно превышать 255 символов', maxLength(255)),
-        minLength: helpers.withMessage('Не менее 3 символов', minLength(3)),
-      },
-      lastName: {
-        required: helpers.withMessage('Поле обязательно для заполнения', required),
-        maxLength: helpers.withMessage('Поле не должно превышать 255 символов', maxLength(255)),
-        minLength: helpers.withMessage('Не менее 3 символов', minLength(3)),
-      },
-      phone: {
-        required: helpers.withMessage('Поле обязательно для заполнения', required),
-        minLength: helpers.withMessage('Поле обязательно для заполнения', minLength(18)),
-      },
-      password: {
-        required: helpers.withMessage('Поле обязательно для заполнения', required),
-        maxLength: helpers.withMessage('Поле не должно превышать 255 символов', maxLength(255)),
-        minLength: helpers.withMessage('Пароль должен состоять не менее чем из 8 символов', minLength(8)),
-        sameAs: helpers.withMessage('Пароли не совпадают', sameAs(this.confirmPassword)),
-      },
-      confirmPassword: {
-        required: helpers.withMessage('Поле обязательно для заполнения', required),
-        sameAs: helpers.withMessage('Пароли не совпадают', sameAs(this.password)),
-      },
+      firstName: nameRules,
+      lastName: nameRules,
+      phone: phoneRules,
+      password: passwordRulesFull,
+      confirmPassword: passwordRulesConfirm(this.password),
     }
   },
   computed: {
