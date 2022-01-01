@@ -48,8 +48,8 @@
       </app-input-password>
       <template v-slot:footer>
         <div class="forgot-password-page__footer-links-wrapper">
-          <app-link class="forgot-password-page__footer-link" :to="{ name: 'login-page' }">Вспомнил пароль!</app-link>
-          <app-link class="forgot-password-page__footer-link" :to="{ name: 'register-page' }">Еще не имеете аккаунта?</app-link>
+          <app-link class="forgot-password-page__footer-link" :to="{ name: loginUrlName }">Вспомнил пароль!</app-link>
+          <app-link class="forgot-password-page__footer-link" :to="{ name: registrationUrlName }">Еще не имеете аккаунта?</app-link>
         </div>
       </template>
     </app-form>
@@ -161,7 +161,13 @@ export default {
         return this.code.replace(/[^\d]/g, '');
       }
       return null;
-    }
+    },
+    registrationUrlName() {
+      return Routes.registration;
+    },
+    loginUrlName() {
+      return Routes.login;
+    },
   },
   watch: {
     timer(newValue) {

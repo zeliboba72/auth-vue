@@ -43,7 +43,7 @@
         Пароль еще раз
       </app-input-password>
       <template v-slot:footer>
-        <app-link :to="{ name: 'login-page' }">Уже зарегистрированы?</app-link>
+        <app-link :to="{ name: loginUrlName }">Уже зарегистрированы?</app-link>
       </template>
     </app-form>
   </div>
@@ -150,7 +150,10 @@ export default {
         return this.phone.replace(/[^\d]/g, '');
       }
       return null;
-    }
+    },
+    loginUrlName() {
+      return Routes.login;
+    },
   },
   watch: {
     firstName(newValue) {

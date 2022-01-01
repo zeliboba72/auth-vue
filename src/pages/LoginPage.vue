@@ -24,8 +24,8 @@
       <app-checkbox class="login-page__checkbox" v-model="remember">Запомнить меня</app-checkbox>
       <template v-slot:footer>
         <div class="login-page__footer-links-wrapper">
-          <app-link class="login-page__footer-link" :to="{ name: 'forgot-password-page' }">Забыли пароль?</app-link>
-          <app-link class="login-page__footer-link" :to="{ name: 'register-page' }">Еще не имеете аккаунта?</app-link>
+          <app-link class="login-page__footer-link" :to="{ name: forgotPasswordUrlName }">Забыли пароль?</app-link>
+          <app-link class="login-page__footer-link" :to="{ name: registrationUrlName }">Еще не имеете аккаунта?</app-link>
         </div>
       </template>
     </app-form>
@@ -97,7 +97,13 @@ export default {
         return this.phone.replace(/[^\d]/g, '');
       }
       return null;
-    }
+    },
+    registrationUrlName() {
+      return Routes.registration;
+    },
+    forgotPasswordUrlName() {
+      return Routes.forgotPassword;
+    },
   },
   watch: {
     password(newValue) {
