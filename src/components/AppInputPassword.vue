@@ -10,8 +10,7 @@
                @blur="$emit('blur')"
         />
         <button type="button" class="app-input__toggle-button" @click="toggleInputType">
-          <svg-icon class="app-input__icon" :class="{active:isHide}" name="icon-pass-hide"/>
-          <svg-icon class="app-input__icon" :class="{active:!isHide}" name="icon-pass-show"/>
+          <svg-icon class="app-input__icon" :name="isHide ? 'icon-pass-hide' : 'icon-pass-show'"/>
         </button>
       </span>
     </label>
@@ -95,12 +94,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  &__icon {
-    display: none;
-    &.active {
-      display: inline;
-    }
   }
   &__control {
     width: 100%;
