@@ -1,7 +1,7 @@
 import axios from "axios";
 import store from "../store";
 
-const axiosInstance = axios.create({
+const httpClient = axios.create({
     baseURL: 'https://backend-front-test.dev.echo-company.ru/api/',
 });
 
@@ -31,7 +31,7 @@ export async function checkAuth() {
 async function addUserToStore(token, remember = true)
 {
     try {
-        const response = await axiosInstance.get('user', {
+        const response = await httpClient.get('user', {
             headers: {'Authorization': token,}
         });
         store.commit('login', {
@@ -54,7 +54,7 @@ async function addUserToStore(token, remember = true)
 export async function login (phone, password, remember) {
     let success = false;
     try {
-        const response = await axiosInstance.post('auth/login', {
+        const response = await httpClient.post('auth/login', {
             phone: phone,
             password: password,
         });
@@ -76,7 +76,7 @@ export async function login (phone, password, remember) {
 export async function registration (firstName, lastName, phone, password) {
     let success = false;
     try {
-        const response = await axiosInstance.post('user/registration', {
+        const response = await httpClient.post('user/registration', {
             first_name: firstName,
             last_name: lastName,
             phone: phone,
@@ -96,7 +96,7 @@ export async function registration (firstName, lastName, phone, password) {
 
 export async function sendSms(phone) {
     try {
-        await axiosInstance.post('user/forgot-start', {
+        await httpClient.post('user/forgot-start', {
             phone: phone,
         });
         return {
@@ -113,7 +113,7 @@ export async function sendSms(phone) {
 export async function resetPassword(phone, code, password) {
     let success = false;
     try {
-        const response = await axiosInstance.post('user/forgot-end', {
+        const response = await httpClient.post('user/forgot-end', {
             phone: phone,
             code: code,
             password: password,
