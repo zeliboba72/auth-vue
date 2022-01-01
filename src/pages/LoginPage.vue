@@ -8,8 +8,8 @@
       <app-input
           v-model="phone"
           :error-message="errorMessagePhone"
-          mask="+7 (###) ###-##-##"
-          placeholder="+7 (___) ___-__-__"
+          :mask="$store.state.phoneMask.mask"
+          :placeholder="$store.state.phoneMask.placeholder"
           @blur="v$.phone.$touch"
       >
         Номер телефона

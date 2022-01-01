@@ -26,8 +26,8 @@
       <app-input
           v-model="code"
           :error-message="errorMessageCode"
-          mask="# - # - # - #"
-          placeholder="0 - 0 - 0 - 0"
+          :mask="$store.state.codeMask.mask"
+          :placeholder="$store.state.codeMask.placeholder"
           @blur="v$.code.$touch"
       >
         Код из СМС
