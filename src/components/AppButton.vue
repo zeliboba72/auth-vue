@@ -1,7 +1,6 @@
 <template>
   <button
       class="app-button"
-      :class="{disabled:disabled}"
       :type="type"
       :disabled="disabled"
       @click="$emit('click')"
@@ -42,7 +41,7 @@ export default {
     color: $light-color;
   }
 
-  &.disabled {
+  &:disabled {
     pointer-events: none;
     background-color: $main-color;
     color: $light-color;
