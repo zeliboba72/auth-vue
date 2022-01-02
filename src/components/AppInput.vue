@@ -1,5 +1,5 @@
 <template>
-  <div class="app-input" :class="{error:errorMessage}">
+  <div class="app-input" :class="{error:hasError}">
     <label class="app-input__label">
       <span class="app-input__label-text"><slot/></span>
       <input class="app-input__control"
@@ -19,7 +19,7 @@
              @blur="$emit('blur')"
       />
     </label>
-    <small v-if="errorMessage" class="app-input__error-text">{{ errorMessage }}</small>
+    <small v-if="hasError" class="app-input__error-text">{{ errorMessage }}</small>
   </div>
 </template>
 
@@ -46,6 +46,9 @@ export default {
   computed: {
     hasMask() {
       return Boolean(this.mask) && Boolean(this.placeholder);
+    },
+    hasError() {
+      return Boolean(this.errorMessage);
     }
   }
 }
