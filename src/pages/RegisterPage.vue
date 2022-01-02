@@ -56,7 +56,7 @@ import AppForm from "../components/AppForm";
 import AppInput from "../components/AppInput";
 import AppInputPassword from "../components/AppInputPassword";
 import AppLink from "../components/AppLink";
-import { registration } from "../custom/methodsApi";
+import { register } from "../custom/methodsApi";
 import { normalizeString } from "../custom/utils";
 import {getErrorMessageForField} from "../custom/vuelidate/validationUtils";
 
@@ -144,7 +144,7 @@ export default {
       }
 
       this.submitting = true;
-      const result = await registration(this.firstName, this.lastName, normalizeString(this.phone), this.password);
+      const result = await register(this.firstName, this.lastName, normalizeString(this.phone), this.password);
       this.submitting = false;
 
       if (result.success) {

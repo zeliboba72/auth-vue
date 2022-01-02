@@ -73,7 +73,7 @@ export async function login (phone, password, remember) {
     }
 }
 
-export async function registration (firstName, lastName, phone, password) {
+export async function register (firstName, lastName, phone, password) {
     let success = false;
     try {
         const response = await httpClient.post('user/registration', {
