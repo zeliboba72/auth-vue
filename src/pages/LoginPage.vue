@@ -52,6 +52,7 @@ import AppInputPassword from "../components/AppInputPassword";
 import AppCheckbox from "../components/AppCheckbox";
 import { login } from "../custom/methodsApi";
 import { normalizeString } from "../custom/utils";
+import { getErrorMessageForField } from "../custom/vuelidate/validationUtils";
 
 export default {
   name: "LoginPage",
@@ -80,22 +81,10 @@ export default {
   },
   computed: {
     errorMessagePhone() {
-      if (this.v$.phone.$error) {
-        return this.v$.phone.$errors[0].$message;
-      } else if (this.serverErrorMessage) {
-        return this.serverErrorMessage;
-      } else {
-        return null;
-      }
+      return getErrorMessageForField(this.v$, 'phone') ?? this.serverErrorMessage;
     },
     errorMessagePassword() {
-      if (this.v$.password.$error) {
-        return this.v$.password.$errors[0].$message;
-      } else if (this.serverErrorMessage) {
-        return this.serverErrorMessage;
-      } else {
-        return null;
-      }
+      return getErrorMessageForField(this.v$, 'password') ?? this.serverErrorMessage;
     },
   },
   watch: {

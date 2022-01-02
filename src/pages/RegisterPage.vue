@@ -58,6 +58,7 @@ import AppInputPassword from "../components/AppInputPassword";
 import AppLink from "../components/AppLink";
 import { registration } from "../custom/methodsApi";
 import { normalizeString } from "../custom/utils";
+import {getErrorMessageForField} from "../custom/vuelidate/validationUtils";
 
 export default {
   name: 'RegisterPage',
@@ -90,41 +91,19 @@ export default {
   },
   computed: {
     errorMessageFirstName() {
-      if (this.v$.firstName.$error) {
-        return this.v$.firstName.$errors[0].$message;
-      } else {
-        return null;
-      }
+      return getErrorMessageForField(this.v$, 'firstName');
     },
     errorMessageLastName() {
-      if (this.v$.lastName.$error) {
-        return this.v$.lastName.$errors[0].$message;
-      } else {
-        return null;
-      }
+      return getErrorMessageForField(this.v$, 'lastName');
     },
     errorMessagePhone() {
-      if (this.v$.phone.$error) {
-        return this.v$.phone.$errors[0].$message;
-      } else if (this.serverErrorMessage) {
-        return this.serverErrorMessage;
-      } else {
-        return null;
-      }
+      return getErrorMessageForField(this.v$, 'phone') ?? this.serverErrorMessage;
     },
     errorMessagePassword() {
-      if (this.v$.password.$error) {
-        return this.v$.password.$errors[0].$message;
-      } else {
-        return null;
-      }
+      return getErrorMessageForField(this.v$, 'password');
     },
     errorMessageConfirmPassword() {
-      if (this.v$.confirmPassword.$error) {
-        return this.v$.confirmPassword.$errors[0].$message;
-      } else {
-        return null;
-      }
+      return getErrorMessageForField(this.v$, 'confirmPassword');
     },
   },
   watch: {

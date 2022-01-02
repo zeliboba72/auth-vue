@@ -76,6 +76,7 @@ import { phoneRules, passwordRulesFull, passwordRulesConfirm, codeRules } from "
 import validationMessages from "../custom/vuelidate/validationMessages";
 import { sendSms, resetPassword } from "../custom/methodsApi";
 import { normalizeString } from "../custom/utils";
+import { getErrorMessageForField } from "../custom/vuelidate/validationUtils";
 
 export default {
   name: 'ForgotPasswordPage',
@@ -116,36 +117,16 @@ export default {
       return !!this.timer;
     },
     errorMessagePhone() {
-      if (this.v$.phone.$error) {
-        return this.v$.phone.$errors[0].$message;
-      } else if (this.serverErrorMessages.phone) {
-        return this.serverErrorMessages.phone;
-      } else {
-        return null;
-      }
+      return getErrorMessageForField(this.v$, 'phone') ?? this.serverErrorMessages.phone;
     },
     errorMessageCode() {
-      if (this.v$.code.$error) {
-        return this.v$.code.$errors[0].$message;
-      } else if (this.serverErrorMessages.code) {
-        return this.serverErrorMessages.code;
-      } else {
-        return null;
-      }
+      return getErrorMessageForField(this.v$, 'code') ?? this.serverErrorMessages.code;
     },
     errorMessagePassword() {
-      if (this.v$.password.$error) {
-        return this.v$.password.$errors[0].$message;
-      } else {
-        return null;
-      }
+      return getErrorMessageForField(this.v$, 'password');
     },
     errorMessageConfirmPassword() {
-      if (this.v$.confirmPassword.$error) {
-        return this.v$.confirmPassword.$errors[0].$message;
-      } else {
-        return null;
-      }
+      return getErrorMessageForField(this.v$, 'confirmPassword');
     },
   },
   watch: {
