@@ -9,8 +9,8 @@
         <app-input
             v-model="phone"
             :error-message="errorMessagePhone"
-            :mask="$store.state.phoneMask.mask"
-            :placeholder="$store.state.phoneMask.placeholder"
+            :mask="phoneMask.mask"
+            :placeholder="phoneMask.placeholder"
             @blur="v$.phone.$touch"
         >
           Телефон
@@ -26,8 +26,8 @@
       <app-input
           v-model="code"
           :error-message="errorMessageCode"
-          :mask="$store.state.codeMask.mask"
-          :placeholder="$store.state.codeMask.placeholder"
+          :mask="codeMask.mask"
+          :placeholder="codeMask.placeholder"
           @blur="v$.code.$touch"
       >
         Код из СМС
@@ -50,13 +50,13 @@
         <div class="forgot-password-page__footer-links-wrapper">
           <app-link
               class="forgot-password-page__footer-link"
-              :to="{ name: $store.state.routes.login }"
+              :to="{ name: routes.login }"
           >
             Вспомнил пароль!
           </app-link>
           <app-link
               class="forgot-password-page__footer-link"
-              :to="{ name: $store.state.routes.registration }"
+              :to="{ name: routes.registration }"
           >
             Еще не имеете аккаунта?
           </app-link>
@@ -77,6 +77,8 @@ import validationMessages from "../custom/vuelidate/validationMessages";
 import { sendSms, resetPassword } from "../custom/methodsApi";
 import { normalizeString } from "../custom/utils";
 import { getErrorMessageForField } from "../custom/vuelidate/validationUtils";
+import { phoneMask, codeMask } from "../custom/masks";
+import { Routes } from "../router/routes";
 
 export default {
   name: 'ForgotPasswordPage',
@@ -102,6 +104,9 @@ export default {
       },
       sentCode: false,
       submitting: false,
+      phoneMask: phoneMask,
+      codeMask: codeMask,
+      routes: Routes,
     }
   },
   validations() {
@@ -187,7 +192,7 @@ export default {
       this.submitting = false;
 
       if (result.success) {
-        await this.$router.push({ name: this.$store.state.routes.profile });
+        await this.$router.push({ name: this.routes.profile });
       } else {
         this.serverErrorMessages.code = result.message;
       }

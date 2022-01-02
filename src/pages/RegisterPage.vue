@@ -22,8 +22,8 @@
       <app-input
           v-model="phone"
           :error-message="errorMessagePhone"
-          :mask="$store.state.phoneMask.mask"
-          :placeholder="$store.state.phoneMask.placeholder"
+          :mask="phoneMask.mask"
+          :placeholder="phoneMask.placeholder"
           @blur="v$.phone.$touch"
       >
         Телефон
@@ -43,7 +43,7 @@
         Пароль еще раз
       </app-input-password>
       <template v-slot:footer>
-        <app-link :to="{ name: $store.state.routes.login }">Уже зарегистрированы?</app-link>
+        <app-link :to="{ name: routes.login }">Уже зарегистрированы?</app-link>
       </template>
     </app-form>
   </div>
@@ -58,7 +58,9 @@ import AppInputPassword from "../components/AppInputPassword";
 import AppLink from "../components/AppLink";
 import { register } from "../custom/methodsApi";
 import { normalizeString } from "../custom/utils";
-import {getErrorMessageForField} from "../custom/vuelidate/validationUtils";
+import { getErrorMessageForField } from "../custom/vuelidate/validationUtils";
+import { phoneMask } from "../custom/masks";
+import { Routes } from "../router/routes";
 
 export default {
   name: 'RegisterPage',
@@ -78,6 +80,8 @@ export default {
       confirmPassword: null,
       serverErrorMessage: null,
       submitting: false,
+      phoneMask: phoneMask,
+      routes: Routes,
     }
   },
   validations () {
@@ -148,7 +152,7 @@ export default {
       this.submitting = false;
 
       if (result.success) {
-        await this.$router.push({ name: this.$store.state.routes.profile });
+        await this.$router.push({ name: this.routes.profile });
       } else {
         this.serverErrorMessage = result.message;
         this.password = null;

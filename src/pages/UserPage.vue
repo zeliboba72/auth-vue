@@ -8,11 +8,17 @@
 <script>
 import AppButton from "../components/AppButton";
 import { logout } from "../custom/methodsApi";
+import { Routes } from "../router/routes";
 
 export default {
   name: 'UserPage',
   components: {
     AppButton,
+  },
+  data() {
+    return {
+      routes: Routes,
+    }
   },
   computed: {
     username() {
@@ -22,7 +28,7 @@ export default {
   methods: {
     async logout() {
       logout();
-      await this.$router.push({ name: this.$store.state.routes.login });
+      await this.$router.push({ name: this.routes.login });
     }
   }
 }

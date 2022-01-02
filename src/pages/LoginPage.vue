@@ -8,8 +8,8 @@
       <app-input
           v-model="phone"
           :error-message="errorMessagePhone"
-          :mask="$store.state.phoneMask.mask"
-          :placeholder="$store.state.phoneMask.placeholder"
+          :mask="phoneMask.mask"
+          :placeholder="phoneMask.placeholder"
           @blur="v$.phone.$touch"
       >
         Номер телефона
@@ -26,13 +26,13 @@
         <div class="login-page__footer-links-wrapper">
           <app-link
               class="login-page__footer-link"
-              :to="{ name: $store.state.routes.forgotPassword }"
+              :to="{ name: routes.forgotPassword }"
           >
             Забыли пароль?
           </app-link>
           <app-link
               class="login-page__footer-link"
-              :to="{ name: $store.state.routes.registration }"
+              :to="{ name: routes.registration }"
           >
             Еще не имеете аккаунта?
           </app-link>
@@ -53,6 +53,8 @@ import AppCheckbox from "../components/AppCheckbox";
 import { login } from "../custom/methodsApi";
 import { normalizeString } from "../custom/utils";
 import { getErrorMessageForField } from "../custom/vuelidate/validationUtils";
+import { phoneMask } from "../custom/masks";
+import { Routes } from "../router/routes";
 
 export default {
   name: "LoginPage",
@@ -71,6 +73,8 @@ export default {
       remember: false,
       serverErrorMessage: null,
       submitting: false,
+      phoneMask: phoneMask,
+      routes: Routes,
     }
   },
   validations () {
@@ -119,7 +123,7 @@ export default {
       this.submitting = false;
 
       if (result.success) {
-        await this.$router.push({ name: this.$store.state.routes.profile });
+        await this.$router.push({ name: this.routes.profile });
       } else {
         this.v$.$reset();
         this.password = null;
