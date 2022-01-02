@@ -123,18 +123,9 @@ export default {
     }
   },
   created() {
-    const oldFirstNameInput = localStorage.getItem('register_firstName');
-    const oldLastNameInput = localStorage.getItem('register_lastName');
-    const oldPhoneInput = localStorage.getItem('register_phone');
-    if (oldFirstNameInput) {
-      this.firstName = oldFirstNameInput;
-    }
-    if (oldLastNameInput) {
-      this.lastName = oldLastNameInput;
-    }
-    if (oldPhoneInput) {
-      this.phone = oldPhoneInput;
-    }
+    this.firstName = localStorage.getItem('register_firstName');
+    this.lastName = localStorage.getItem('register_lastName');
+    this.phone = localStorage.getItem('register_phone');
   },
   methods: {
     async onSubmit() {

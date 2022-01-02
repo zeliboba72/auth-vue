@@ -149,10 +149,7 @@ export default {
     },
   },
   created() {
-    const oldPhoneInput = localStorage.getItem('forgot-password_phone');
-    if (oldPhoneInput) {
-      this.phone = oldPhoneInput;
-    }
+    this.phone = localStorage.getItem('forgot-password_phone');
   },
   methods: {
     async send() {

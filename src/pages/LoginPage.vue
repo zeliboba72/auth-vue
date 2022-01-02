@@ -99,13 +99,18 @@ export default {
     },
     phone(newValue) {
       localStorage.setItem('login_phone', newValue);
+    },
+    remember(newValue) {
+      if (newValue) {
+        localStorage.setItem('login_remember', 'Y');
+      } else {
+        localStorage.setItem('login_remember', '');
+      }
     }
   },
   created() {
-    const oldPhoneInput = localStorage.getItem('login_phone');
-    if (oldPhoneInput) {
-      this.phone = oldPhoneInput;
-    }
+    this.phone = localStorage.getItem('login_phone');
+    this.remember = Boolean(localStorage.getItem('login_remember'));
   },
   methods: {
     async onSubmit() {
