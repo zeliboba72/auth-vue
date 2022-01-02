@@ -6,7 +6,7 @@ const httpClient = axios.create({
 });
 
 export async function checkAuth() {
-    if (store.state.login) {
+    if (store.getters.isLoggedIn) {
         return true;
     }
 
@@ -19,7 +19,7 @@ export async function checkAuth() {
 
     if (userData) {
         const parsedUserData = JSON.parse(userData);
-        store.commit('login', {
+        store.commit('setUser', {
             username: parsedUserData.first_name,
         });
         return true;
@@ -34,7 +34,7 @@ async function addUserToStore(token, remember = true)
         const response = await httpClient.get('user', {
             headers: {'Authorization': token,}
         });
-        store.commit('login', {
+        store.commit('setUser', {
             username: response.data.first_name,
         });
         localStorage.setItem('token', token);
@@ -131,7 +131,7 @@ export async function resetPassword(phone, code, password) {
 }
 
 export function logout () {
-    store.commit('logout');
+    store.commit('setUser', { username: null })
     localStorage.removeItem('token');
     localStorage.removeItem('user_data');
 }
