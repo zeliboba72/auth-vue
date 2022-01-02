@@ -18,7 +18,7 @@
         <p class="forgot-password-page__resend-text" v-if="timer">Отправить повторно через {{ timer }} секунд</p>
         <app-button
             :disabled="disabledSendButton"
-            @click="sendSms"
+            @click="send"
         >
           Отправить код
         </app-button>
@@ -150,7 +150,7 @@ export default {
     }
   },
   methods: {
-    async sendSms() {
+    async send() {
       if (this.v$.phone.$invalid || this.timer || this.serverErrorMessages.phone || this.submitting) {
         this.v$.phone.$touch();
         return;
@@ -187,7 +187,7 @@ export default {
       this.submitting = false;
 
       if (result.success) {
-        this.$router.push({ name: this.$store.state.routes.profile });
+        await this.$router.push({ name: this.$store.state.routes.profile });
       } else {
         this.serverErrorMessages.code = result.message;
       }

@@ -1,7 +1,7 @@
 <template>
   <div class="user-page">
     <h1 class="user-page__title">Здравствуйте, {{ username }} !</h1>
-    <app-button @click="onLogout">Выйти</app-button>
+    <app-button @click="logout">Выйти</app-button>
   </div>
 </template>
 
@@ -20,9 +20,9 @@ export default {
     }
   },
   methods: {
-    onLogout() {
+    async logout() {
       logout();
-      this.$router.push({ name: this.$store.state.routes.login });
+      await this.$router.push({ name: this.$store.state.routes.login });
     }
   }
 }

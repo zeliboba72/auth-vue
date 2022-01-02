@@ -3,7 +3,7 @@
     <app-form
         title="Регистрация"
         submit-text="Зарегистрироваться"
-        @submit="submitForm"
+        @submit="onSubmit"
     >
       <app-input
           v-model="firstName"
@@ -133,7 +133,7 @@ export default {
     }
   },
   methods: {
-    async submitForm() {
+    async onSubmit() {
       if (this.serverErrorMessage || this.submitting) {
         return;
       }
@@ -148,7 +148,7 @@ export default {
       this.submitting = false;
 
       if (result.success) {
-        this.$router.push({ name: this.$store.state.routes.profile });
+        await this.$router.push({ name: this.$store.state.routes.profile });
       } else {
         this.serverErrorMessage = result.message;
         this.password = null;

@@ -3,7 +3,7 @@
     <app-form
         title="Аутентификация"
         submit-text="Войти"
-        @submit="formSubmit"
+        @submit="onSubmit"
     >
       <app-input
           v-model="phone"
@@ -104,7 +104,7 @@ export default {
     }
   },
   methods: {
-    async formSubmit() {
+    async onSubmit() {
       if (this.serverErrorMessage || this.submitting) {
         return;
       }
@@ -119,7 +119,7 @@ export default {
       this.submitting = false;
 
       if (result.success) {
-        this.$router.push({ name: this.$store.state.routes.profile });
+        await this.$router.push({ name: this.$store.state.routes.profile });
       } else {
         this.v$.$reset();
         this.password = null;
